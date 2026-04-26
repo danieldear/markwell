@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Markwell is an open-source Markdown desktop app and terminal viewer built with Rust and Tauri." />
+  <title>Markwell</title>
+  <link rel="stylesheet" href="./site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Markwell home">
+      <img src="./markwell-icon.png" alt="" width="30" height="30" />
+      <span>Markwell</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#release">Release</a>
+      <a href="./README.md">Docs</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-backdrop" aria-hidden="true">
+        <div class="workspace-shot">
+          <div class="shot-bar">
+            <span></span><span></span><span></span>
+            <strong>README.md</strong>
+          </div>
+          <div class="shot-body">
+            <aside>
+              <b>Outline</b>
+              <span>Overview</span>
+              <span>Quick Start</span>
+              <span>Architecture</span>
+              <span>Release</span>
+            </aside>
+            <pre># Markwell
+
+Open source Markdown,
+rendered with care.
+
+```mermaid
+flowchart LR
+  Core --> CLI
+  Core --> App
+```</pre>
+            <article>
+              <h3>Markwell</h3>
+              <p>Open source Markdown, rendered with care.</p>
+              <div class="diagram">Core -> CLI + App</div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <img src="./markwell-icon.png" alt="" width="72" height="72" />
+        <p class="eyebrow">Rust desktop app and terminal viewer</p>
+        <h1>Markwell</h1>
+        <p class="lede">
+          A professional open-source Markdown workbench for reading, editing,
+          previewing, and shipping technical documents.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#release">Release checklist</a>
+          <a class="button" href="./README.md">Read the docs</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="status-strip" aria-label="Project status">
+      <div>
+        <span>Current</span>
+        <strong>Preparing first public release</strong>
+      </div>
+      <div>
+        <span>Desktop</span>
+        <strong>Tauri 2 app bundle and DMG</strong>
+      </div>
+      <div>
+        <span>CLI</span>
+        <strong><code>md &lt;file.md&gt;</code></strong>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-heading">
+        <p class="eyebrow">Capabilities</p>
+        <h2>Built for local Markdown work.</h2>
+      </div>
+      <div class="feature-grid">
+        <article>
+          <span class="feature-mark">01</span>
+          <h3>Desktop preview</h3>
+          <p>Open Markdown files in a native window with rendered preview, outline navigation, metadata, file watching, and save/reload controls.</p>
+        </article>
+        <article>
+          <span class="feature-mark">02</span>
+          <h3>Terminal workflow</h3>
+          <p>Use <code>md</code> from the shell for formatted output, pager integration, ratatui viewing, split editing, and ASCII Mermaid diagrams.</p>
+        </article>
+        <article>
+          <span class="feature-mark">03</span>
+          <h3>Shared Rust core</h3>
+          <p>Desktop and terminal surfaces use the same parser and renderer contracts, backed by fixtures and integration tests.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section architecture" id="architecture">
+      <div class="section-heading">
+        <p class="eyebrow">Architecture</p>
+        <h2>Small crates with clear boundaries.</h2>
+      </div>
+      <div class="flow" aria-label="Architecture flow">
+        <div>markdown-core</div>
+        <span></span>
+        <div>terminal renderer</div>
+        <div>HTML renderer</div>
+        <span></span>
+        <div>md CLI / Tauri app</div>
+      </div>
+    </section>
+
+    <section class="section release" id="release">
+      <div class="section-heading">
+        <p class="eyebrow">Release path</p>
+        <h2>Designed for a clean GitHub launch.</h2>
+      </div>
+      <div class="release-grid">
+        <article>
+          <h3>Checks</h3>
+          <pre>cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-features</pre>
+        </article>
+        <article>
+          <h3>Artifacts</h3>
+          <pre>cd crates/markdown-app
+cargo tauri build
+cargo tauri build --bundles dmg</pre>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Markwell</span>
+    <a href="./architecture.md">Architecture</a>
+    <a href="./project-plan.md">Project plan</a>
+    <a href="./milestone-status.md">Milestone status</a>
+  </footer>
+
+  <script src="./site.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+[package]
+name = "markdown-app"
+version = "0.1.0"
+edition = "2024"
+
+# The single unified binary — acts as CLI in terminal, GUI when launched from Finder / .app bundle
+[[bin]]
+name = "md"
+path = "src/main.rs"
+
+# ── GUI deps ────────────────────────────────────────────────────────────────
+[dependencies]
+tauri                = { version = "2", features = ["macos-private-api"] }
+markdown-core        = { path = "../markdown-core" }
+markdown-render-html = { path = "../markdown-render-html" }
+serde                = { version = "1", features = ["derive"] }
+serde_json           = "1"
+notify               = "6"
+rfd                  = "0.14"
+
+# ── CLI / TUI deps ──────────────────────────────────────────────────────────
+anyhow               = { workspace = true }
+clap                 = { workspace = true }
+markdown-render-terminal = { path = "../markdown-render-terminal" }
+shell-words          = { workspace = true }
+crossterm            = { workspace = true }
+ratatui              = { workspace = true }
+ansi-to-tui          = { workspace = true }
+ratatui-textarea     = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+window-vibrancy = "0.5"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dev-dependencies]
+assert_cmd  = { workspace = true }
+predicates  = { workspace = true }

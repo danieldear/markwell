@@ -1,0 +1,32 @@
+[workspace]
+members = [
+  "crates/markdown-core",
+  "crates/markdown-render-terminal",
+  "crates/markdown-render-html",
+  "crates/markdown-app",
+  "crates/markdown-ffi",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+license = "MIT OR Apache-2.0"
+version = "0.1.0"
+authors = ["Markwell Contributors"]
+
+[workspace.dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.40", features = ["derive"] }
+markdown = "1.0.0"
+textwrap = "0.16.1"
+thiserror = "2.0.17"
+once_cell = "1.21.3"
+assert_cmd = "2.0.16"
+predicates = "3.1.2"
+shell-words = "1.1.0"
+mdansi = "0.1.0"
+mermaid-text = "0.16.1"
+ratatui = "0.30.0"
+crossterm = "0.29.0"
+ansi-to-tui = "8.0.1"
+ratatui-textarea = "0.9.1"

@@ -1,0 +1,13 @@
+/target/
+/.DS_Store
+**/.DS_Store
+
+# Editor/tooling local state
+/.claude/
+/.codex/
+/.cursor/
+/.vscode/
+/.zed/
+
+# agent007 local home (never commit)
+/.agent007/

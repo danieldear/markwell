@@ -1,0 +1,9 @@
+HEADINGS
+H1: Fixture One
+BLOCKS
+Heading(level=1, text=Fixture One)
+Paragraph(text=Paragraph for fixture.)
+List(ordered=false, items=2)
+CodeFence(language=Some("rust"), code="fn fixture() {}")
+Table(headers=["Name", "Value"], rows=[["A", "1"]])
+DIAGNOSTICS

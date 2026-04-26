@@ -1,0 +1,64 @@
+{
+  "productName": "Markwell",
+  "version": "0.1.0",
+  "identifier": "dev.markwell.desktop",
+  "build": {
+    "frontendDist": "ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Markwell",
+        "width": 1120,
+        "height": 760,
+        "minWidth": 720,
+        "minHeight": 520,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": false,
+        "transparent": true,
+        "decorations": true,
+        "center": true
+      }
+    ],
+    "macOSPrivateApi": true,
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "publisher": "Markwell Contributors",
+    "copyright": "Copyright © 2026 Markwell Contributors",
+    "category": "Productivity",
+    "icon": ["icons/icon.png"],
+    "shortDescription": "A fast, beautiful Markdown reader and editor",
+    "longDescription": "Markwell is a native macOS Markdown viewer with live preview, mermaid diagrams, and a built-in editor.",
+    "fileAssociations": [
+      {
+        "ext": ["md", "markdown"],
+        "contentTypes": ["net.daringfireball.markdown", "public.markdown", "public.plain-text"],
+        "name": "Markdown",
+        "description": "Markdown Document",
+        "mimeType": "text/markdown",
+        "role": "Editor",
+        "rank": "Default"
+      },
+      {
+        "ext": ["txt"],
+        "contentTypes": ["public.plain-text"],
+        "name": "Plain Text (Markdown)",
+        "description": "Plain Text Document",
+        "mimeType": "text/plain",
+        "role": "Viewer",
+        "rank": "Alternate"
+      }
+    ],
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "signingIdentity": null,
+      "entitlements": null
+    }
+  }
+}
