@@ -3,6 +3,7 @@ use markdown_render_html::render_html;
 use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use serde::Serialize;
 use std::fs;
+use std::ffi::{OsStr, OsString};
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, mpsc};
 use tauri::{Emitter, Manager, State, WebviewWindow};
@@ -195,16 +196,29 @@ pub fn run() {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 fn startup_file_paths() -> Vec<String> {
-    std::env::args_os()
-        .skip(1)
+    collect_startup_file_paths(std::env::args_os().skip(1))
+}
+
+fn collect_startup_file_paths(args: impl IntoIterator<Item = OsString>) -> Vec<String> {
+    args.into_iter()
         .filter(|arg| {
             let value = arg.to_string_lossy();
             !value.starts_with("-psn_") && value != "--app" && value != "--gui"
         })
-        .map(PathBuf::from)
+        .filter_map(|arg| path_from_input(&arg))
         .filter(|path| is_supported_document(path))
         .map(|path| path.to_string_lossy().to_string())
         .collect()
+}
+
+fn path_from_input(arg: &OsStr) -> Option<PathBuf> {
+    let value = arg.to_string_lossy();
+    if value.starts_with("file://") {
+        return tauri::Url::parse(&value)
+            .ok()
+            .and_then(|url| url.to_file_path().ok());
+    }
+    Some(PathBuf::from(arg))
 }
 
 fn drain_open_paths(state: &State<'_, OpenPathsState>) -> Vec<String> {
@@ -280,4 +294,36 @@ fn apply_macos_window_style(window: &WebviewWindow) {
     use window_vibrancy::{NSVisualEffectMaterial, apply_vibrancy};
     apply_vibrancy(window, NSVisualEffectMaterial::Sidebar, None, None)
         .unwrap_or_else(|e| eprintln!("vibrancy unavailable: {e}"));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::collect_startup_file_paths;
+    use std::ffi::OsString;
+
+    #[test]
+    fn startup_paths_filter_flags_and_unsupported_extensions() {
+        let paths = collect_startup_file_paths(vec![
+            OsString::from("-psn_0_12345"),
+            OsString::from("--app"),
+            OsString::from("/tmp/notes.md"),
+            OsString::from("/tmp/image.png"),
+            OsString::from("/tmp/readme.MARKDOWN"),
+        ]);
+        assert_eq!(paths, vec!["/tmp/notes.md", "/tmp/readme.MARKDOWN"]);
+    }
+
+    #[test]
+    fn startup_paths_normalize_file_urls_to_real_paths() {
+        let paths = collect_startup_file_paths(vec![OsString::from(
+            "file:///Users/neo/Documents/Project%20Guide.md",
+        )]);
+        assert_eq!(paths, vec!["/Users/neo/Documents/Project Guide.md"]);
+    }
+
+    #[test]
+    fn startup_paths_ignore_invalid_file_urls() {
+        let paths = collect_startup_file_paths(vec![OsString::from("file://%%invalid%%.md")]);
+        assert!(paths.is_empty());
+    }
 }
