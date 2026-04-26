@@ -213,15 +213,13 @@ fn drain_open_paths(state: &State<'_, OpenPathsState>) -> Vec<String> {
 }
 
 fn is_supported_document(path: &Path) -> bool {
-    path.is_file()
-        && path
-            .extension()
-            .and_then(|ext| ext.to_str())
-            .map(|ext| {
-                let ext = ext.to_ascii_lowercase();
-                matches!(ext.as_str(), "md" | "markdown" | "txt")
-            })
-            .unwrap_or(false)
+    path.extension()
+        .and_then(|ext| ext.to_str())
+        .map(|ext| {
+            let ext = ext.to_ascii_lowercase();
+            matches!(ext.as_str(), "md" | "markdown" | "txt")
+        })
+        .unwrap_or(false)
 }
 
 fn emit_open_paths<R: tauri::Runtime>(app_handle: &tauri::AppHandle<R>, paths: Vec<PathBuf>) {

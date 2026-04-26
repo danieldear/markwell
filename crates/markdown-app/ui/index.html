@@ -1021,8 +1021,7 @@
     document.addEventListener('dragover',  e => e.preventDefault());
     document.addEventListener('drop', e => {
       e.preventDefault(); n=0; $('drop-overlay').classList.remove('show');
-      const f = e.dataTransfer?.files?.[0];
-      if (f?.path) loadFile(f.path); // fallback for environments that expose file.path
+      loadFirstSupportedPath(extractDomDropPaths(e.dataTransfer));
     });
   }
 
@@ -1045,6 +1044,32 @@
     } catch (_) {
       return raw;
     }
+  }
+
+  function extractDomDropPaths(dataTransfer) {
+    if (!dataTransfer) return [];
+    const paths = [];
+
+    // Some runtimes expose direct file paths on File objects.
+    const files = Array.from(dataTransfer.files ?? []);
+    for (const f of files) {
+      if (typeof f?.path === 'string' && f.path.length > 0) paths.push(f.path);
+    }
+
+    // macOS Finder frequently provides URI lists.
+    const uriList = dataTransfer.getData?.('text/uri-list');
+    if (uriList) {
+      for (const line of uriList.split(/\r?\n/)) {
+        const value = line.trim();
+        if (value && !value.startsWith('#')) paths.push(value);
+      }
+    }
+
+    // Some apps expose a single file URL/path via text/plain.
+    const plain = dataTransfer.getData?.('text/plain');
+    if (plain) paths.push(...plain.split(/\r?\n/).map(v => v.trim()).filter(Boolean));
+
+    return paths;
   }
 </script>
 </body>

@@ -10,6 +10,7 @@
     "windows": [
       {
         "title": "Markwell",
+        "dragDropEnabled": true,
         "width": 1120,
         "height": 760,
         "minWidth": 720,
