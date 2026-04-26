@@ -47,27 +47,33 @@
           <span class="badge">Tauri 2</span>
           <span class="badge">MIT License</span>
           <span class="badge">macOS · Linux</span>
+          <span class="badge badge-warn">Pre-release</span>
         </div>
 
         <h1>Markdown viewer<br />and editor.</h1>
 
         <p class="hero-desc">
           Native desktop app and terminal pager for Markdown files.
-          Local-only processing, no accounts, no telemetry.
+          Local-only, no accounts, no telemetry.
           Free and open source.
         </p>
 
         <div class="install-block" id="install">
+          <div class="install-label">Build from source</div>
           <div class="install-line">
             <span class="i-prompt">$</span>
-            <span class="i-cmd">cargo install markwell</span>
-            <button class="copy-btn" id="copyInstall" title="Copy command" aria-label="Copy install command">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            </button>
+            <span class="i-cmd">git clone https://github.com/danieldear/markwell</span>
           </div>
           <div class="install-line">
             <span class="i-prompt">$</span>
-            <span class="i-cmd">md README.md</span>
+            <span class="i-cmd">cargo build --release -p markdown-app</span>
+          </div>
+          <div class="install-line">
+            <span class="i-prompt">$</span>
+            <span class="i-cmd">./target/release/md README.md</span>
+            <button class="copy-btn" id="copyInstall" title="Copy command" aria-label="Copy run command">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
           </div>
         </div>
 
@@ -367,14 +373,13 @@
               <span class="qs-num">02</span>
               <h3>Build artifacts</h3>
             </div>
-            <pre class="codeblock"><code><span class="t-dim"># CLI binary</span>
-<span class="t-kw">cargo</span> build --release -p markdown-cli
+            <pre class="codeblock"><code><span class="t-dim"># CLI binary (produces ./target/release/md)</span>
+<span class="t-kw">cargo</span> build --release -p markdown-app
 
 <span class="t-dim"># Desktop app + DMG</span>
 <span class="t-kw">cd</span> crates/markdown-app
 <span class="t-kw">cargo</span> tauri build
-<span class="t-kw">cargo</span> tauri build \
-  --bundles dmg</code></pre>
+<span class="t-kw">cargo</span> tauri build --bundles dmg</code></pre>
           </article>
 
           <article class="qs-card">
@@ -388,11 +393,11 @@
 <span class="t-dim"># pipe to pager</span>
 <span class="t-kw">md</span> README.md | less -R
 
-<span class="t-dim"># open desktop app</span>
-<span class="t-kw">markwell</span> path/to/file.md
+<span class="t-dim"># interactive TUI viewer</span>
+<span class="t-kw">md</span> view README.md
 
-<span class="t-dim"># watch mode</span>
-<span class="t-kw">md</span> --watch README.md</code></pre>
+<span class="t-dim"># open desktop preview window</span>
+<span class="t-kw">md</span> --app path/to/file.md</code></pre>
           </article>
 
         </div>
@@ -440,11 +445,11 @@
       });
     });
 
-    // Copy install command
+    // Copy run command
     const copyBtn = document.getElementById('copyInstall');
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText('cargo install markwell').then(() => {
+        navigator.clipboard.writeText('./target/release/md README.md').then(() => {
           copyBtn.classList.add('copied');
           setTimeout(() => copyBtn.classList.remove('copied'), 1800);
         });
