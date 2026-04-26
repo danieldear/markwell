@@ -4,317 +4,415 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Markwell — open-source Markdown desktop app and terminal viewer built with Rust and Tauri." />
-  <title>Markwell</title>
+  <title>Markwell — Markdown for developers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,700&family=IBM+Plex+Mono:wght@400;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./site.css" />
 </head>
 <body>
 
-  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <!-- HEADER -->
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Markwell home">
-      <img src="./markwell-icon.png" alt="" width="24" height="24" />
-      <span>Markwell</span>
+      <img src="./markwell-icon.png" alt="" width="20" height="20" />
+      <span>markwell</span>
     </a>
     <nav aria-label="Primary">
       <a href="#features">Features</a>
       <a href="#architecture">Architecture</a>
-      <a href="#release">Release</a>
+      <a href="#install">Install</a>
       <a href="./README.md">Docs</a>
     </nav>
     <div class="header-right">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <a class="nav-cta" href="#release">Get started</a>
+      <a class="btn-gh" href="https://github.com" target="_blank" rel="noopener" aria-label="View on GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>
     </div>
   </header>
 
   <main id="top">
 
-    <!-- ── HERO ─────────────────────────────────────────────── -->
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-glow" aria-hidden="true"></div>
 
       <div class="hero-text">
-        <div class="eyebrow">
-          <span class="pill">Open source</span>
-          <span class="pill">Rust</span>
-          <span class="pill">Tauri 2</span>
+        <div class="badge-row">
+          <span class="badge">Rust</span>
+          <span class="badge">Tauri 2</span>
+          <span class="badge">MIT License</span>
+          <span class="badge">macOS · Linux</span>
         </div>
-        <h1>
-          Markdown,<br />
-          <em>rendered<br />with care.</em>
-        </h1>
-        <p class="lede">
-          A professional Markdown workbench — native desktop app and terminal viewer,
-          both powered by the same Rust core.
+
+        <h1>Markdown viewer<br />and editor.</h1>
+
+        <p class="hero-desc">
+          Native desktop app and terminal pager for Markdown files.
+          Local-only processing, no accounts, no telemetry.
+          Free and open source.
         </p>
+
+        <div class="install-block" id="install">
+          <div class="install-line">
+            <span class="i-prompt">$</span>
+            <span class="i-cmd">cargo install markwell</span>
+            <button class="copy-btn" id="copyInstall" title="Copy command" aria-label="Copy install command">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <div class="install-line">
+            <span class="i-prompt">$</span>
+            <span class="i-cmd">md README.md</span>
+          </div>
+        </div>
+
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#release">Release checklist</a>
-          <a class="btn btn-outline" href="./README.md">Read the docs</a>
+          <a class="btn btn-primary" href="#features">See features</a>
+          <a class="btn btn-outline" href="./README.md">Documentation</a>
         </div>
       </div>
 
-      <!-- dual-surface mockup -->
-      <div class="hero-demo" aria-hidden="true">
-        <div class="demo-chrome">
-          <div class="demo-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="demo-tabs">
+      <!-- Terminal mockup -->
+      <div class="hero-term" aria-hidden="true">
+        <div class="term-titlebar">
+          <span class="term-proc">md README.md</span>
+          <div class="term-tabs">
             <button class="demo-tab active">Terminal</button>
-            <button class="demo-tab">Desktop</button>
+            <button class="demo-tab">Preview</button>
           </div>
-          <div class="demo-badge">README.md</div>
+          <span class="term-badge">README.md</span>
         </div>
-        <div class="demo-body">
+        <div class="term-body">
 
           <!-- Terminal pane -->
           <div class="pane pane-term">
-            <div class="term-prompt">
-              <span class="prompt-sym">$</span>
-              <span class="prompt-cmd">md README.md</span>
-              <span class="prompt-cursor">█</span>
+            <div class="term-prompt-line">
+              <span class="tp-sym">~/projects</span><span class="tp-sep"> $ </span><span class="tp-cmd">md README.md</span><span class="tp-cursor">▋</span>
             </div>
-            <div class="term-output">
+            <div class="term-out">
               <div class="to-rule"></div>
-              <div class="to-h1"><span class="amber">▌</span> Markwell</div>
+              <div class="to-h1"><span class="a">▌</span> Markwell</div>
               <div class="to-rule"></div>
-              <br />
-              <div class="to-p">Open source Markdown, rendered</div>
-              <div class="to-p">with care.</div>
-              <br />
-              <div class="to-h2"><span class="amber">##</span> Quick Start</div>
-              <br />
-              <div class="to-code"><span class="amber">$</span> cargo install markwell</div>
-              <div class="to-code"><span class="amber">$</span> md README.md</div>
-              <br />
-              <div class="to-h2"><span class="amber">##</span> Architecture</div>
-              <br />
-              <div class="to-diagram">
-                <span class="diag-box">markdown-core</span>
-                <span class="diag-arr"> ──▶ </span>
-                <span class="diag-box">CLI</span>
-              </div>
-              <div class="to-diagram to-diagram-2">
-                <span class="diag-indent">             </span>
-                <span class="diag-arr"> ──▶ </span>
-                <span class="diag-box">App</span>
-              </div>
+              <div class="to-blank"></div>
+              <div class="to-p">Open-source Markdown viewer and editor.</div>
+              <div class="to-p">Built with Rust and Tauri 2.</div>
+              <div class="to-blank"></div>
+              <div class="to-h2"><span class="a">##</span> Quick Start</div>
+              <div class="to-blank"></div>
+              <div class="to-code"><span class="a">$</span> cargo install markwell</div>
+              <div class="to-code"><span class="a">$</span> md README.md</div>
+              <div class="to-blank"></div>
+              <div class="to-h2"><span class="a">##</span> Architecture</div>
+              <div class="to-blank"></div>
+              <div class="to-diag"><span class="to-box">markdown-core</span><span class="to-arr"> ──▶ </span><span class="to-box">CLI</span></div>
+              <div class="to-diag to-diag2"><span class="to-indent">              </span><span class="to-arr"> ──▶ </span><span class="to-box">App</span></div>
+              <div class="to-blank"></div>
+              <div class="to-h2"><span class="a">##</span> Features</div>
+              <div class="to-blank"></div>
+              <div class="to-li"><span class="a">•</span> File watching + hot reload</div>
+              <div class="to-li"><span class="a">•</span> YAML frontmatter parsing</div>
+              <div class="to-li"><span class="a">•</span> Mermaid diagram rendering</div>
+              <div class="to-li"><span class="a">•</span> Drag &amp; drop file support</div>
             </div>
           </div>
 
           <!-- Preview pane -->
           <div class="pane pane-preview">
-            <div class="preview-scroll">
+            <div class="prev-inner">
               <div class="prev-ruler"></div>
               <h2 class="prev-h1">Markwell</h2>
-              <p class="prev-p prev-lead">Open source Markdown, rendered with care.</p>
-              <div class="prev-divider"></div>
+              <p class="prev-lead">Open-source Markdown viewer and editor. Built with Rust and Tauri 2.</p>
+              <hr class="prev-hr" />
               <h3 class="prev-h2">Quick Start</h3>
               <p class="prev-p">Install from crates.io and point it at any Markdown file.</p>
               <div class="prev-code">cargo install markwell</div>
               <div class="prev-code">md README.md</div>
               <h3 class="prev-h2">Architecture</h3>
-              <div class="prev-diagram">
-                <div class="prev-node prev-node-core">markdown-core</div>
-                <div class="prev-arrows">
-                  <div class="prev-arrow-line"></div>
-                  <div class="prev-arrow-branch">
-                    <span></span><span></span>
-                  </div>
+              <div class="prev-diag">
+                <div class="pd-node pd-core">markdown-core</div>
+                <div class="pd-arrows">
+                  <div class="pd-line"></div>
+                  <div class="pd-branch"><span></span><span></span></div>
                 </div>
-                <div class="prev-targets">
-                  <div class="prev-node">CLI</div>
-                  <div class="prev-node">App</div>
+                <div class="pd-targets">
+                  <div class="pd-node">CLI</div>
+                  <div class="pd-node">App</div>
                 </div>
               </div>
             </div>
           </div>
 
         </div>
-        <div class="demo-statusbar">
-          <span class="sb-item amber-text">Markdown</span>
-          <span class="sb-sep">·</span>
-          <span class="sb-item">LF</span>
-          <span class="sb-sep">·</span>
-          <span class="sb-item">UTF-8</span>
-          <span class="sb-right">Ln 1, Col 1</span>
+        <div class="term-statusbar">
+          <span class="tsb-item amber-text">Markdown</span>
+          <span class="tsb-sep">·</span>
+          <span class="tsb-item">LF</span>
+          <span class="tsb-sep">·</span>
+          <span class="tsb-item">UTF-8</span>
+          <span class="tsb-right">Ln 1, Col 1</span>
         </div>
       </div>
+
     </section>
 
-    <!-- ── STATUS BAR ─────────────────────────────────────────── -->
-    <div class="status-bar" aria-label="Project status">
-      <div class="status-item">
-        <span class="status-key">Status</span>
-        <span class="status-val">Preparing first public release</span>
+    <!-- SPEC BAR -->
+    <div class="spec-bar" aria-label="Project spec">
+      <div class="spec-item">
+        <span class="spec-key">Status</span>
+        <span class="spec-val">Preparing first public release</span>
       </div>
-      <div class="status-divider"></div>
-      <div class="status-item">
-        <span class="status-key">Desktop</span>
-        <span class="status-val">Tauri 2 · DMG · macOS &amp; Linux</span>
+      <div class="spec-div"></div>
+      <div class="spec-item">
+        <span class="spec-key">Desktop</span>
+        <span class="spec-val">Tauri 2 · DMG · macOS &amp; Linux</span>
       </div>
-      <div class="status-divider"></div>
-      <div class="status-item">
-        <span class="status-key">CLI</span>
-        <span class="status-val mono"><span class="amber-text">$</span> md &lt;file.md&gt;</span>
+      <div class="spec-div"></div>
+      <div class="spec-item">
+        <span class="spec-key">CLI</span>
+        <span class="spec-val mono"><span class="amber-text">$</span> md &lt;file.md&gt;</span>
+      </div>
+      <div class="spec-div"></div>
+      <div class="spec-item">
+        <span class="spec-key">Language</span>
+        <span class="spec-val">Rust · no runtime deps</span>
       </div>
     </div>
 
-    <!-- ── FEATURES ──────────────────────────────────────────── -->
+    <!-- FEATURES -->
     <section class="section" id="features">
       <div class="section-inner">
         <header class="section-head">
-          <div class="section-num">01</div>
-          <div>
-            <p class="label">Capabilities</p>
-            <h2>Built for serious<br />local Markdown work.</h2>
-          </div>
+          <div class="section-label">// features</div>
+          <h2>What it does.</h2>
+          <p class="section-sub">Two surfaces, one Rust core. No Electron. No Node.</p>
         </header>
-        <div class="features">
+        <div class="feat-grid">
+
           <article class="feat">
             <div class="feat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            </div>
+            <h3>Terminal pager</h3>
+            <p>Pipe any Markdown file through <code>md</code> for rich ANSI output. Integrates with your existing pager (<code>less</code>, <code>bat</code>). Ratatui-powered interactive view with scroll and search.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">ratatui</span>
+              <span class="feat-tag">ANSI</span>
+            </div>
+          </article>
+
+          <article class="feat">
+            <div class="feat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
             </div>
             <h3>Desktop preview</h3>
-            <p>Open Markdown files in a native window with rendered preview, outline navigation, metadata, file watching, and save/reload controls.</p>
-            <div class="feat-tag">Tauri 2</div>
-          </article>
-          <article class="feat">
-            <div class="feat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            <p>Native window with live-rendered preview, document outline, frontmatter metadata panel, file watching, and drag-and-drop file open. No browser required.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">Tauri 2</span>
+              <span class="feat-tag">WebView</span>
             </div>
-            <h3>Terminal workflow</h3>
-            <p>Use <code>md</code> from the shell for formatted output, pager integration, ratatui viewing, split editing, and ASCII Mermaid diagrams.</p>
-            <div class="feat-tag">ratatui · ANSI</div>
           </article>
+
           <article class="feat">
             <div class="feat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
             </div>
             <h3>Shared Rust core</h3>
-            <p>Desktop and terminal surfaces use the same parser and renderer contracts, backed by fixtures and integration tests.</p>
-            <div class="feat-tag">Rust · tested</div>
+            <p>Both surfaces use the same parser and renderer contracts. Tested with fixtures. Adding a new rendering target means implementing one trait, not duplicating logic.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">Rust</span>
+              <span class="feat-tag">tested</span>
+            </div>
           </article>
+
+          <article class="feat">
+            <div class="feat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3>File watching</h3>
+            <p>Open a file and edits propagate instantly. Works with any editor. The desktop app auto-reloads on save; the terminal view polls for changes in the background.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">notify</span>
+              <span class="feat-tag">hot reload</span>
+            </div>
+          </article>
+
+          <article class="feat">
+            <div class="feat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <h3>YAML frontmatter</h3>
+            <p>Parses and renders YAML front matter as a structured metadata sidebar. Useful for static-site authors and note-taking workflows using tools like Obsidian or Jekyll.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">YAML</span>
+              <span class="feat-tag">metadata</span>
+            </div>
+          </article>
+
+          <article class="feat">
+            <div class="feat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <h3>Mermaid diagrams</h3>
+            <p>Fenced <code>mermaid</code> blocks render as SVG in the desktop preview. The terminal surface outputs ASCII-art approximations compatible with any monospace environment.</p>
+            <div class="feat-tags">
+              <span class="feat-tag">SVG</span>
+              <span class="feat-tag">ASCII fallback</span>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
 
-    <!-- ── ARCHITECTURE ──────────────────────────────────────── -->
-    <section class="section section-arch" id="architecture">
+    <!-- ARCHITECTURE -->
+    <section class="section section-alt" id="architecture">
       <div class="section-inner">
         <header class="section-head">
-          <div class="section-num">02</div>
-          <div>
-            <p class="label">Architecture</p>
-            <h2>Small crates with<br />clear boundaries.</h2>
-          </div>
+          <div class="section-label">// architecture</div>
+          <h2>Small crates, clear boundaries.</h2>
+          <p class="section-sub">The workspace is split into focused crates. Each layer depends only on the layer below it.</p>
         </header>
-        <div class="arch">
-          <div class="arch-row">
-            <div class="arch-node arch-core">
-              <div class="arch-node-name">markdown-core</div>
-              <div class="arch-node-desc">parser · renderer contracts · fixtures</div>
+
+        <div class="arch-wrap">
+          <div class="arch-diagram">
+            <div class="arch-row">
+              <div class="arch-node arch-core">
+                <span class="an-name">markdown-core</span>
+                <span class="an-desc">parser · renderer traits · test fixtures</span>
+              </div>
+            </div>
+            <div class="arch-connectors">
+              <div class="arch-vert"></div>
+              <div class="arch-horiz"><span></span><span></span></div>
+            </div>
+            <div class="arch-row arch-mid-row">
+              <div class="arch-node">
+                <span class="an-name">terminal renderer</span>
+                <span class="an-desc">ratatui · ANSI · ASCII diagrams</span>
+              </div>
+              <div class="arch-node">
+                <span class="an-name">HTML renderer</span>
+                <span class="an-desc">WebView · syntax highlight · Mermaid</span>
+              </div>
+            </div>
+            <div class="arch-connectors arch-connectors-2">
+              <div class="arch-vert"></div>
+              <div class="arch-vert"></div>
+            </div>
+            <div class="arch-row arch-out-row">
+              <div class="arch-node arch-leaf">
+                <span class="an-name"><code>md</code> CLI</span>
+                <span class="an-desc">unified binary</span>
+              </div>
+              <div class="arch-node arch-leaf">
+                <span class="an-name">Tauri app</span>
+                <span class="an-desc">macOS · Linux</span>
+              </div>
             </div>
           </div>
-          <div class="arch-row arch-connectors">
-            <div class="arch-vert"></div>
-            <div class="arch-horiz">
-              <span></span>
-              <span></span>
+
+          <div class="arch-notes">
+            <div class="arch-note">
+              <span class="an-tag">cargo workspace</span>
+              <p>All crates live in a single Cargo workspace. <code>cargo build --workspace</code> builds everything in one shot.</p>
             </div>
-          </div>
-          <div class="arch-row arch-mid">
-            <div class="arch-node">
-              <div class="arch-node-name">terminal renderer</div>
-              <div class="arch-node-desc">ratatui · ANSI · ASCII diagrams</div>
+            <div class="arch-note">
+              <span class="an-tag">renderer trait</span>
+              <p>The <code>Renderer</code> trait in <code>markdown-core</code> is the only contract the leaf crates implement — swapping rendering targets requires no changes to the parser.</p>
             </div>
-            <div class="arch-node">
-              <div class="arch-node-name">HTML renderer</div>
-              <div class="arch-node-desc">WebView · syntax highlight · Mermaid</div>
-            </div>
-          </div>
-          <div class="arch-row arch-connectors arch-connectors-2">
-            <div class="arch-vert"></div>
-            <div class="arch-vert"></div>
-          </div>
-          <div class="arch-row arch-out">
-            <div class="arch-node arch-output">
-              <div class="arch-node-name"><code>md</code> CLI</div>
-              <div class="arch-node-desc">unified binary</div>
-            </div>
-            <div class="arch-node arch-output">
-              <div class="arch-node-name">Tauri app</div>
-              <div class="arch-node-desc">macOS · Linux</div>
+            <div class="arch-note">
+              <span class="an-tag">test fixtures</span>
+              <p>Shared fixture files guarantee rendering parity. A failing fixture in one surface is a bug in that surface alone, not the parser.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── RELEASE ───────────────────────────────────────────── -->
-    <section class="section" id="release">
+    <!-- INSTALL / QUICK START -->
+    <section class="section" id="quickstart">
       <div class="section-inner">
         <header class="section-head">
-          <div class="section-num">03</div>
-          <div>
-            <p class="label">Release path</p>
-            <h2>Designed for a clean<br />GitHub launch.</h2>
-          </div>
+          <div class="section-label">// quick start</div>
+          <h2>Build and run.</h2>
+          <p class="section-sub">Requires Rust stable and Cargo. Tauri build requires the platform WebView runtime.</p>
         </header>
-        <div class="release-grid">
-          <article class="release-card">
-            <div class="release-card-top">
-              <span class="release-step-num">01</span>
+        <div class="qs-grid">
+
+          <article class="qs-card">
+            <div class="qs-card-head">
+              <span class="qs-num">01</span>
               <h3>Quality checks</h3>
             </div>
-            <pre class="codeblock"><code><span class="tok-kw">cargo</span> fmt --all -- --check
+            <pre class="codeblock"><code><span class="t-kw">cargo</span> fmt --all -- --check
 
-<span class="tok-kw">cargo</span> clippy \
+<span class="t-kw">cargo</span> clippy \
   --workspace \
   --all-targets \
   --all-features \
   -- -D warnings
 
-<span class="tok-kw">cargo</span> test \
+<span class="t-kw">cargo</span> test \
   --workspace \
   --all-features</code></pre>
           </article>
-          <article class="release-card">
-            <div class="release-card-top">
-              <span class="release-step-num">02</span>
+
+          <article class="qs-card">
+            <div class="qs-card-head">
+              <span class="qs-num">02</span>
               <h3>Build artifacts</h3>
             </div>
-            <pre class="codeblock"><code><span class="tok-kw">cd</span> crates/markdown-app
+            <pre class="codeblock"><code><span class="t-dim"># CLI binary</span>
+<span class="t-kw">cargo</span> build --release -p markdown-cli
 
-<span class="tok-kw">cargo</span> tauri build
-
-<span class="tok-kw">cargo</span> tauri build \
+<span class="t-dim"># Desktop app + DMG</span>
+<span class="t-kw">cd</span> crates/markdown-app
+<span class="t-kw">cargo</span> tauri build
+<span class="t-kw">cargo</span> tauri build \
   --bundles dmg</code></pre>
           </article>
+
+          <article class="qs-card">
+            <div class="qs-card-head">
+              <span class="qs-num">03</span>
+              <h3>Usage</h3>
+            </div>
+            <pre class="codeblock"><code><span class="t-dim"># render to terminal</span>
+<span class="t-kw">md</span> README.md
+
+<span class="t-dim"># pipe to pager</span>
+<span class="t-kw">md</span> README.md | less -R
+
+<span class="t-dim"># open desktop app</span>
+<span class="t-kw">markwell</span> path/to/file.md
+
+<span class="t-dim"># watch mode</span>
+<span class="t-kw">md</span> --watch README.md</code></pre>
+          </article>
+
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-brand">
-      <img src="./markwell-icon.png" alt="" width="18" height="18" />
-      <span>Markwell</span>
+      <img src="./markwell-icon.png" alt="" width="16" height="16" />
+      <span>markwell</span>
     </div>
     <nav class="footer-links" aria-label="Footer">
       <a href="./architecture.md">Architecture</a>
       <a href="./project-plan.md">Project plan</a>
       <a href="./milestone-status.md">Milestone status</a>
     </nav>
-    <p class="footer-legal">Open source. Built with Rust.</p>
+    <p class="footer-legal">Open source · Built with Rust · MIT License</p>
   </footer>
 
   <script src="./site.js"></script>
@@ -322,13 +420,9 @@
     // Theme toggle
     const toggle = document.getElementById('themeToggle');
     const html = document.documentElement;
-    // Respect system preference on first visit
-    if (!localStorage.getItem('mw-theme')) {
-      const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-      html.setAttribute('data-theme', sys);
-    } else {
-      html.setAttribute('data-theme', localStorage.getItem('mw-theme'));
-    }
+    const stored = localStorage.getItem('mw-theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    html.setAttribute('data-theme', stored || sys);
     toggle.addEventListener('click', () => {
       const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
@@ -342,9 +436,20 @@
         tab.classList.add('active');
         const panes = document.querySelectorAll('.pane');
         panes.forEach(p => p.style.opacity = '0');
-        if (panes[i]) { panes[i].style.opacity = '1'; }
+        if (panes[i]) panes[i].style.opacity = '1';
       });
     });
+
+    // Copy install command
+    const copyBtn = document.getElementById('copyInstall');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText('cargo install markwell').then(() => {
+          copyBtn.classList.add('copied');
+          setTimeout(() => copyBtn.classList.remove('copied'), 1800);
+        });
+      });
+    }
   </script>
 </body>
 </html>
