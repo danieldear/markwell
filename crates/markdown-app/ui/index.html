@@ -972,66 +972,55 @@
 
   // ── Drag & drop ───────────────────────────────────────────────────────────
   function setupDragDrop() {
-    const handleDropPayload = payload => {
-      const type = payload?.type;
-      if (!type) return;
-      if (type === 'drop') {
-        $('drop-overlay').classList.remove('show');
-        loadFirstSupportedPath(extractDropPaths(payload));
-      } else if (type === 'over' || type === 'enter') {
-        $('drop-overlay').classList.add('show');
-      } else if (type === 'leave' || type === 'cancel') {
-        $('drop-overlay').classList.remove('show');
-      }
+    const overlay = $('drop-overlay');
+
+    const showOverlay = () => overlay.classList.add('show');
+    const hideOverlay = () => overlay.classList.remove('show');
+
+    const handleDrop = paths => {
+      hideOverlay();
+      const resolved = (Array.isArray(paths) ? paths : [])
+        .map(normalizeLocalPath)
+        .filter(Boolean);
+      if (resolved.length > 0) loadFirstSupportedPath(resolved);
     };
 
-    const subscribeTauriDragDrop = async () => {
-      try {
-        if (window.__TAURI__?.webview?.getCurrentWebview) {
-          const webview = window.__TAURI__.webview.getCurrentWebview();
-          if (typeof webview?.onDragDropEvent === 'function') {
-            await webview.onDragDropEvent(event => handleDropPayload(event?.payload));
-          }
-        }
-      } catch (err) {
-        console.warn('webview.onDragDropEvent:', err);
+    // ── Tauri 2 primary path ───────────────────────────────────────────────
+    // tauri://drag-drop fires for enter, over, drop, leave, cancel.
+    // Must NOT load on enter — paths appear in enter too but the user has not
+    // released the file yet.  Only load on type === 'drop'.
+    listen('tauri://drag-drop', ev => {
+      const p = ev?.payload;
+      if (!p) return;
+      switch (p.type) {
+        case 'drop':
+          handleDrop(p.paths);
+          break;
+        case 'enter':
+        case 'over':
+          showOverlay();
+          break;
+        default:
+          hideOverlay();
       }
+    }).catch(() => {});
 
-      try {
-        if (typeof appWindow.onDragDropEvent === 'function') {
-          await appWindow.onDragDropEvent(event => handleDropPayload(event?.payload));
-        }
-      } catch (err) {
-        console.warn('window.onDragDropEvent:', err);
-      }
-
-      // Compatibility listeners across Tauri event names.
-      try { await listen('tauri://drag-drop', event => loadFirstSupportedPath(extractDropPaths(event?.payload))); } catch (_) {}
-      try { await listen('tauri://file-drop', event => loadFirstSupportedPath(extractDropPaths(event?.payload))); } catch (_) {}
-      try { await listen('tauri://drag-over', () => $('drop-overlay').classList.add('show')); } catch (_) {}
-      try { await listen('tauri://file-drop-hover', () => $('drop-overlay').classList.add('show')); } catch (_) {}
-      try { await listen('tauri://drag-leave', () => $('drop-overlay').classList.remove('show')); } catch (_) {}
-      try { await listen('tauri://file-drop-cancelled', () => $('drop-overlay').classList.remove('show')); } catch (_) {}
-    };
-    subscribeTauriDragDrop();
-
-    let n = 0;
-    document.addEventListener('dragenter', e => { e.preventDefault(); if (++n===1) $('drop-overlay').classList.add('show'); });
-    document.addEventListener('dragleave', () => { if (--n<=0) { n=0; $('drop-overlay').classList.remove('show'); } });
-    document.addEventListener('dragover',  e => e.preventDefault());
-    document.addEventListener('drop', e => {
-      e.preventDefault(); n=0; $('drop-overlay').classList.remove('show');
-      loadFirstSupportedPath(extractDomDropPaths(e.dataTransfer));
+    // ── DOM fallback (fires when Tauri does not intercept the drop) ────────
+    let enterCount = 0;
+    document.addEventListener('dragenter', e => {
+      e.preventDefault();
+      if (++enterCount === 1) showOverlay();
     });
-  }
-
-  function extractDropPaths(payload) {
-    if (!payload) return [];
-    if (Array.isArray(payload)) return payload;
-    if (Array.isArray(payload.paths)) return payload.paths;
-    if (typeof payload.path === 'string') return [payload.path];
-    if (typeof payload.url === 'string') return [payload.url];
-    return [];
+    document.addEventListener('dragleave', () => {
+      if (--enterCount <= 0) { enterCount = 0; hideOverlay(); }
+    });
+    document.addEventListener('dragover', e => e.preventDefault());
+    document.addEventListener('drop', e => {
+      e.preventDefault();
+      enterCount = 0;
+      hideOverlay();
+      handleDrop(extractDomDropPaths(e.dataTransfer));
+    });
   }
 
   function normalizeLocalPath(raw) {
