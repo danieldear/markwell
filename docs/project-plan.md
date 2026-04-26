@@ -48,8 +48,13 @@ push branch
 
 ## Post-Release Roadmap
 
-- macOS signing and notarization.
-- Quick Look preview extension backed by `markdown-ffi`.
-- Linux `.desktop` and MIME registration polish.
-- Better HTML sanitization policy for richer Markdown inputs.
-- Documentation site deployment through GitHub Pages.
+The canonical post-release roadmap now lives in:
+
+- [Roadmap](./roadmap.md)
+
+Immediate post-release focus remains:
+
+1. Reliability hardening for file-open workflows (`Open With`, drag-drop,
+   CLI/app routing).
+2. Signing/notarization planning and rollout for macOS distribution.
+3. Developer UX baseline (workspace ergonomics and keyboard-first flow).

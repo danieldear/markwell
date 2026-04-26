@@ -1,6 +1,6 @@
 # Milestone Status
 
-Date: 2026-04-25
+Date: 2026-04-26
 
 ## Progress Board
 
@@ -12,6 +12,10 @@ Date: 2026-04-25
 [M4] macOS file association  | IN REVIEW
 [M5] Linux integration       | PLANNED
 [M6] Public release          | IN PROGRESS
+[M7] Reliability hardening   | PLANNED
+[M8] Core UX parity          | PLANNED
+[M9] Differentiators         | PLANNED
+[M10] Ecosystem + scale      | PLANNED
 ```
 
 ## Completed
@@ -34,10 +38,11 @@ Date: 2026-04-25
 
 ## Known Gaps
 
-- `install.sh` currently requires `REPO=owner/repository` until the final GitHub path is known.
 - macOS signing/notarization is not configured.
 - Linux package artifacts have not been validated on a clean release runner.
 - Quick Look extension scaffold exists in `macos/MarkwellQuickLook`; host-app embedding and signing remain pending.
+- Roadmap execution after first release has now been documented in
+  [roadmap.md](./roadmap.md) and needs milestone-by-milestone tracking.
 
 ## Release Gate
 

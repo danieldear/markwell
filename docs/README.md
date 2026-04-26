@@ -22,6 +22,7 @@ release plan for Markwell.
 - [Design](./design.md)
 - [Historical GPUI design notes](./ui-gpui-design.md)
 - [Project plan](./project-plan.md)
+- [Roadmap](./roadmap.md)
 - [Milestones](./milestones.md)
 - [Milestone status](./milestone-status.md)
 - [Release checklist](./release-checklist.md)

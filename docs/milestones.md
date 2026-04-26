@@ -11,6 +11,10 @@
 | M4 | macOS integration | In review | file association path handoff validated |
 | M5 | Linux integration | Planned | `.desktop`, MIME/default app validation |
 | M6 | First public release | In progress | CI green, artifacts verified, docs polished |
+| M7 | Reliability hardening | Planned | open-path workflow reliability and safety baselines met |
+| M8 | Developer core UX parity | Planned | daily-driver workspace and navigation flows complete |
+| M9 | Differentiator features | Planned | shell/desktop bridge + developer-specific advantages shipped |
+| M10 | Ecosystem and scale | Planned | extension model and contributor-ready operations established |
 
 ## Feature Breakdown
 
@@ -67,5 +71,20 @@
 ## Recommended Execution Order
 
 ```text
-M0 -> M1 -> M2/M3 -> M4 review -> M6 public release -> M5/Linux polish
+M0 -> M1 -> M2/M3 -> M4 review -> M6 public release
+  -> M7 reliability hardening -> M8 UX parity
+  -> M9 differentiators -> M10 ecosystem scale
 ```
+
+## Roadmap Alignment (M7+)
+
+```text
+Phase 1 (Q2 2026): Trust + Reliability        -> M7
+Phase 2 (Q3 2026): Developer Core UX Parity   -> M8
+Phase 3 (Q4 2026): Differentiators            -> M9
+Phase 4 (Q1 2027): Ecosystem + Scale          -> M10
+```
+
+Reference:
+
+- [Roadmap](./roadmap.md)
