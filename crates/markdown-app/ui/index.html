@@ -985,25 +985,15 @@
       if (resolved.length > 0) loadFirstSupportedPath(resolved);
     };
 
-    // ── Tauri 2 primary path ───────────────────────────────────────────────
-    // tauri://drag-drop fires for enter, over, drop, leave, cancel.
-    // Must NOT load on enter — paths appear in enter too but the user has not
-    // released the file yet.  Only load on type === 'drop'.
-    listen('tauri://drag-drop', ev => {
-      const p = ev?.payload;
-      if (!p) return;
-      switch (p.type) {
-        case 'drop':
-          handleDrop(p.paths);
-          break;
-        case 'enter':
-        case 'over':
-          showOverlay();
-          break;
-        default:
-          hideOverlay();
-      }
-    }).catch(() => {});
+    // ── Tauri 2.x: four separate named events (no shared "type" field) ────
+    // tauri://drag-drop  → { paths: string[], position: {...} }
+    // tauri://drag-enter → { paths: string[], position: {...} }
+    // tauri://drag-over  → { position: {...} }   (no paths)
+    // tauri://drag-leave → {}
+    listen('tauri://drag-drop',  ev => handleDrop(ev?.payload?.paths)).catch(() => {});
+    listen('tauri://drag-enter', ()  => showOverlay()).catch(() => {});
+    listen('tauri://drag-over',  ()  => showOverlay()).catch(() => {});
+    listen('tauri://drag-leave', ()  => hideOverlay()).catch(() => {});
 
     // ── DOM fallback (fires when Tauri does not intercept the drop) ────────
     let enterCount = 0;
