@@ -970,20 +970,48 @@
 
   // ── Drag & drop ───────────────────────────────────────────────────────────
   function setupDragDrop() {
-    if (typeof appWindow.onDragDropEvent === 'function') {
-      appWindow.onDragDropEvent(event => {
-        const payload = event?.payload;
-        if (!payload || typeof payload.type !== 'string') return;
-        if (payload.type === 'drop') {
-          $('drop-overlay').classList.remove('show');
-          loadFirstSupportedPath(payload.paths);
-        } else if (payload.type === 'over') {
-          $('drop-overlay').classList.add('show');
-        } else if (payload.type === 'cancel') {
-          $('drop-overlay').classList.remove('show');
+    const handleDropPayload = payload => {
+      const type = payload?.type;
+      if (!type) return;
+      if (type === 'drop') {
+        $('drop-overlay').classList.remove('show');
+        loadFirstSupportedPath(extractDropPaths(payload));
+      } else if (type === 'over' || type === 'enter') {
+        $('drop-overlay').classList.add('show');
+      } else if (type === 'leave' || type === 'cancel') {
+        $('drop-overlay').classList.remove('show');
+      }
+    };
+
+    const subscribeTauriDragDrop = async () => {
+      try {
+        if (window.__TAURI__?.webview?.getCurrentWebview) {
+          const webview = window.__TAURI__.webview.getCurrentWebview();
+          if (typeof webview?.onDragDropEvent === 'function') {
+            await webview.onDragDropEvent(event => handleDropPayload(event?.payload));
+          }
         }
-      }).catch(err => console.warn('onDragDropEvent:', err));
-    }
+      } catch (err) {
+        console.warn('webview.onDragDropEvent:', err);
+      }
+
+      try {
+        if (typeof appWindow.onDragDropEvent === 'function') {
+          await appWindow.onDragDropEvent(event => handleDropPayload(event?.payload));
+        }
+      } catch (err) {
+        console.warn('window.onDragDropEvent:', err);
+      }
+
+      // Compatibility listeners across Tauri event names.
+      try { await listen('tauri://drag-drop', event => loadFirstSupportedPath(extractDropPaths(event?.payload))); } catch (_) {}
+      try { await listen('tauri://file-drop', event => loadFirstSupportedPath(extractDropPaths(event?.payload))); } catch (_) {}
+      try { await listen('tauri://drag-over', () => $('drop-overlay').classList.add('show')); } catch (_) {}
+      try { await listen('tauri://file-drop-hover', () => $('drop-overlay').classList.add('show')); } catch (_) {}
+      try { await listen('tauri://drag-leave', () => $('drop-overlay').classList.remove('show')); } catch (_) {}
+      try { await listen('tauri://file-drop-cancelled', () => $('drop-overlay').classList.remove('show')); } catch (_) {}
+    };
+    subscribeTauriDragDrop();
 
     let n = 0;
     document.addEventListener('dragenter', e => { e.preventDefault(); if (++n===1) $('drop-overlay').classList.add('show'); });
@@ -994,6 +1022,14 @@
       const f = e.dataTransfer?.files?.[0];
       if (f?.path) loadFile(f.path); // fallback for environments that expose file.path
     });
+  }
+
+  function extractDropPaths(payload) {
+    if (!payload) return [];
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload.paths)) return payload.paths;
+    if (typeof payload.path === 'string') return [payload.path];
+    return [];
   }
 </script>
 </body>
