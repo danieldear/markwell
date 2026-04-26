@@ -168,29 +168,26 @@ pub fn run() {
         .expect("error while building Markwell");
 
     app.run(|app_handle, event| {
+        if let tauri::RunEvent::WindowEvent { event, .. } = &event
+            && let tauri::WindowEvent::DragDrop(tauri::DragDropEvent::Drop { paths, .. }) = event
+        {
+            emit_open_paths(app_handle, paths.clone());
+        }
+
+        if let tauri::RunEvent::WebviewEvent { event, .. } = &event
+            && let tauri::WebviewEvent::DragDrop(tauri::DragDropEvent::Drop { paths, .. }) = event
+        {
+            emit_open_paths(app_handle, paths.clone());
+        }
+
         #[cfg(target_os = "macos")]
         if let tauri::RunEvent::Opened { urls } = event {
             let paths = urls
                 .into_iter()
                 .filter_map(|url| url.to_file_path().ok())
                 .filter(|path| is_supported_document(path))
-                .map(|path| path.to_string_lossy().to_string())
                 .collect::<Vec<_>>();
-
-            if paths.is_empty() {
-                return;
-            }
-
-            if let Some(state) = app_handle.try_state::<OpenPathsState>() {
-                let mut queued = state.0.lock().expect("open paths state poisoned");
-                queued.extend(paths.clone());
-            }
-
-            let _ = app_handle.emit("open-paths", paths);
-            if let Some(window) = app_handle.get_webview_window("main") {
-                let _ = window.show();
-                let _ = window.set_focus();
-            }
+            emit_open_paths(app_handle, paths);
         }
     });
 }
@@ -225,6 +222,29 @@ fn is_supported_document(path: &Path) -> bool {
                 matches!(ext.as_str(), "md" | "markdown" | "txt")
             })
             .unwrap_or(false)
+}
+
+fn emit_open_paths<R: tauri::Runtime>(app_handle: &tauri::AppHandle<R>, paths: Vec<PathBuf>) {
+    let paths = paths
+        .into_iter()
+        .filter(|path| is_supported_document(path))
+        .map(|path| path.to_string_lossy().to_string())
+        .collect::<Vec<_>>();
+
+    if paths.is_empty() {
+        return;
+    }
+
+    if let Some(state) = app_handle.try_state::<OpenPathsState>() {
+        let mut queued = state.0.lock().expect("open paths state poisoned");
+        queued.extend(paths.clone());
+    }
+
+    let _ = app_handle.emit("open-paths", paths);
+    if let Some(window) = app_handle.get_webview_window("main") {
+        let _ = window.show();
+        let _ = window.set_focus();
+    }
 }
 
 fn extract_headings(doc: &markdown_core::Document) -> Vec<HeadingEntry> {
