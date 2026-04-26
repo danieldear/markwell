@@ -17,8 +17,21 @@ Use this checklist before the first public GitHub release.
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
+cargo test -p markdown-app
 cd crates/markdown-app && cargo tauri build
 ```
+
+## Automated Open-Path Matrix
+
+- `crates/markdown-app/src/gui.rs` unit tests cover:
+  - startup argv parsing, including `file://` path normalization,
+  - supported-extension filtering for `md`, `markdown`, `txt`,
+  - open-path queue ingestion ordering semantics.
+- `crates/markdown-app/src/main.rs` unit tests cover CLI-vs-GUI runtime
+  handoff invariants (`--app/--gui`, `--cli/--no-gui`, `-psn_*`, terminal,
+  bundle fallback).
+- Boundary: installed-app integration flows (`Open With`, OS drag-drop surface)
+  remain manual verification in the macOS section below.
 
 ## macOS Verification
 

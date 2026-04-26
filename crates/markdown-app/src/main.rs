@@ -31,7 +31,24 @@ fn main() {
 /// 6. Everything else          → CLI
 fn use_gui_mode() -> bool {
     let args: Vec<String> = std::env::args().collect();
+    let has_terminal = std::io::stdin().is_terminal()
+        || std::io::stdout().is_terminal()
+        || std::io::stderr().is_terminal();
 
+    // Detect if we are running inside a macOS .app bundle.
+    #[cfg(target_os = "macos")]
+    let in_app_bundle = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.to_str().map(|s| s.contains(".app/Contents/")))
+        .unwrap_or(false);
+
+    #[cfg(not(target_os = "macos"))]
+    let in_app_bundle = false;
+
+    decide_gui_mode(&args, has_terminal, in_app_bundle)
+}
+
+fn decide_gui_mode(args: &[String], has_terminal: bool, in_app_bundle: bool) -> bool {
     // Explicit opt-in
     if args.iter().any(|a| a == "--app" || a == "--gui") {
         return true;
@@ -49,22 +66,55 @@ fn use_gui_mode() -> bool {
 
     // Shell usage should stay in CLI mode even if the executable path is inside
     // a bundled .app (e.g. /Applications/Markwell.app/Contents/MacOS/md).
-    if std::io::stdin().is_terminal()
-        || std::io::stdout().is_terminal()
-        || std::io::stderr().is_terminal()
-    {
+    if has_terminal {
         return false;
     }
 
-    // Detect if we are running inside a macOS .app bundle
-    #[cfg(target_os = "macos")]
-    if std::env::current_exe()
-        .ok()
-        .and_then(|p| p.to_str().map(|s| s.contains(".app/Contents/")))
-        .unwrap_or(false)
-    {
+    // Desktop launch fallback
+    if in_app_bundle {
         return true;
     }
 
     false
+}
+
+#[cfg(test)]
+mod tests {
+    use super::decide_gui_mode;
+
+    fn args(values: &[&str]) -> Vec<String> {
+        values.iter().map(|s| s.to_string()).collect()
+    }
+
+    #[test]
+    fn gui_flag_forces_gui_mode() {
+        assert!(decide_gui_mode(&args(&["md", "--app"]), true, false));
+        assert!(decide_gui_mode(&args(&["md", "--gui"]), true, false));
+    }
+
+    #[test]
+    fn cli_flags_force_cli_mode() {
+        assert!(!decide_gui_mode(&args(&["md", "--cli"]), false, true));
+        assert!(!decide_gui_mode(&args(&["md", "--no-gui"]), false, true));
+    }
+
+    #[test]
+    fn psn_argument_uses_gui_mode() {
+        assert!(decide_gui_mode(&args(&["md", "-psn_0_12345"]), false, false));
+    }
+
+    #[test]
+    fn terminal_defaults_to_cli_mode() {
+        assert!(!decide_gui_mode(&args(&["md", "README.md"]), true, true));
+    }
+
+    #[test]
+    fn app_bundle_defaults_to_gui_without_terminal() {
+        assert!(decide_gui_mode(&args(&["md"]), false, true));
+    }
+
+    #[test]
+    fn defaults_to_cli_mode_without_terminal_or_bundle() {
+        assert!(!decide_gui_mode(&args(&["md"]), false, false));
+    }
 }

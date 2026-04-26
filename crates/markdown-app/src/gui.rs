@@ -200,15 +200,12 @@ fn startup_file_paths() -> Vec<String> {
 }
 
 fn collect_startup_file_paths(args: impl IntoIterator<Item = OsString>) -> Vec<String> {
-    args.into_iter()
+    normalize_supported_paths(args.into_iter()
         .filter(|arg| {
             let value = arg.to_string_lossy();
             !value.starts_with("-psn_") && value != "--app" && value != "--gui"
         })
-        .filter_map(|arg| path_from_input(&arg))
-        .filter(|path| is_supported_document(path))
-        .map(|path| path.to_string_lossy().to_string())
-        .collect()
+        .filter_map(|arg| path_from_input(&arg)))
 }
 
 fn path_from_input(arg: &OsStr) -> Option<PathBuf> {
@@ -226,6 +223,17 @@ fn drain_open_paths(state: &State<'_, OpenPathsState>) -> Vec<String> {
     std::mem::take(&mut *paths)
 }
 
+fn normalize_supported_paths(paths: impl IntoIterator<Item = PathBuf>) -> Vec<String> {
+    paths.into_iter()
+        .filter(|path| is_supported_document(path))
+        .map(|path| path.to_string_lossy().to_string())
+        .collect()
+}
+
+fn queue_open_paths(queue: &mut Vec<String>, paths: &[String]) {
+    queue.extend(paths.iter().cloned());
+}
+
 fn is_supported_document(path: &Path) -> bool {
     path.extension()
         .and_then(|ext| ext.to_str())
@@ -237,11 +245,7 @@ fn is_supported_document(path: &Path) -> bool {
 }
 
 fn emit_open_paths<R: tauri::Runtime>(app_handle: &tauri::AppHandle<R>, paths: Vec<PathBuf>) {
-    let paths = paths
-        .into_iter()
-        .filter(|path| is_supported_document(path))
-        .map(|path| path.to_string_lossy().to_string())
-        .collect::<Vec<_>>();
+    let paths = normalize_supported_paths(paths);
 
     if paths.is_empty() {
         return;
@@ -249,7 +253,7 @@ fn emit_open_paths<R: tauri::Runtime>(app_handle: &tauri::AppHandle<R>, paths: V
 
     if let Some(state) = app_handle.try_state::<OpenPathsState>() {
         let mut queued = state.0.lock().expect("open paths state poisoned");
-        queued.extend(paths.clone());
+        queue_open_paths(&mut queued, &paths);
     }
 
     let _ = app_handle.emit("open-paths", paths);
@@ -298,8 +302,9 @@ fn apply_macos_window_style(window: &WebviewWindow) {
 
 #[cfg(test)]
 mod tests {
-    use super::collect_startup_file_paths;
+    use super::{collect_startup_file_paths, normalize_supported_paths, queue_open_paths};
     use std::ffi::OsString;
+    use std::path::PathBuf;
 
     #[test]
     fn startup_paths_filter_flags_and_unsupported_extensions() {
@@ -325,5 +330,48 @@ mod tests {
     fn startup_paths_ignore_invalid_file_urls() {
         let paths = collect_startup_file_paths(vec![OsString::from("file://%%invalid%%.md")]);
         assert!(paths.is_empty());
+    }
+
+    #[test]
+    fn startup_paths_accept_supported_extensions_case_insensitive() {
+        let paths = collect_startup_file_paths(vec![
+            OsString::from("/tmp/doc.Md"),
+            OsString::from("/tmp/wiki.MarkDown"),
+            OsString::from("/tmp/note.TXT"),
+            OsString::from("/tmp/photo.jpg"),
+        ]);
+        assert_eq!(
+            paths,
+            vec!["/tmp/doc.Md", "/tmp/wiki.MarkDown", "/tmp/note.TXT"]
+        );
+    }
+
+    #[test]
+    fn normalize_supported_paths_filters_and_preserves_order() {
+        let normalized = normalize_supported_paths(vec![
+            PathBuf::from("/tmp/1.md"),
+            PathBuf::from("/tmp/2.png"),
+            PathBuf::from("/tmp/3.markdown"),
+            PathBuf::from("/tmp/4.txt"),
+        ]);
+        assert_eq!(
+            normalized,
+            vec!["/tmp/1.md", "/tmp/3.markdown", "/tmp/4.txt"]
+        );
+    }
+
+    #[test]
+    fn queue_open_paths_appends_payload_in_order() {
+        let mut queue = vec!["/tmp/existing.md".to_string()];
+        let new_paths = vec!["/tmp/new-a.md".to_string(), "/tmp/new-b.txt".to_string()];
+        queue_open_paths(&mut queue, &new_paths);
+        assert_eq!(
+            queue,
+            vec![
+                "/tmp/existing.md",
+                "/tmp/new-a.md",
+                "/tmp/new-b.txt"
+            ]
+        );
     }
 }
