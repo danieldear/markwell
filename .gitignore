@@ -11,3 +11,6 @@
 
 # agent007 local home (never commit)
 /.agent007/
+
+# Quick Look local build artifacts
+/macos/MarkwellQuickLook/.build/

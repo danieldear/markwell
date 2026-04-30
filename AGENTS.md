@@ -32,7 +32,7 @@ steps, `agent007` tracks the run, and memory improves over time.
 The important rule is:
 
 ```text
-for multi-step or high-context work, route through agent007 first
+for ui tasks, development, code-reviews, analysis, multi-step or high-context work, route through agent007 first
 ```
 
 ---

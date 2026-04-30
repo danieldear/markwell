@@ -25,35 +25,40 @@
       --font-mono: "SF Mono", "Menlo", "Monaco", monospace;
 
       /* Layout */
-      --titlebar-h: 44px;   /* macOS overlay title bar is 44px */
+      --titlebar-h: 54px;   /* overlay titlebar zone */
       --sidebar-w:  240px;
 
       /* Light */
-      --bg:           rgba(250, 250, 252, 1);
-      --bg-sidebar:   rgba(0, 0, 0, 0.022);
-      --bg-editor:    rgba(245, 245, 249, 0.98);
-      --border:       rgba(0, 0, 0, 0.07);
-      --border-md:    rgba(0, 0, 0, 0.11);
-      --border-lg:    rgba(0, 0, 0, 0.17);
-      --text-1:       #1d1d1f;
-      --text-2:       #6e6e73;
-      --text-3:       #aeaeb2;
-      --text-4:       #c7c7cc;
-      --accent:       #007AFF;
-      --warn:         #FF9500;
+      --bg:           rgba(248, 250, 255, 0.88);
+      --bg-shell-1:   rgba(255, 255, 255, 0.84);
+      --bg-shell-2:   rgba(243, 247, 255, 0.90);
+      --bg-sidebar:   rgba(255, 255, 255, 0.70);
+      --bg-editor:    rgba(255, 255, 255, 0.76);
+      --border:       rgba(16, 24, 40, 0.09);
+      --border-md:    rgba(16, 24, 40, 0.16);
+      --border-lg:    rgba(16, 24, 40, 0.23);
+      --text-1:       rgba(23, 31, 45, 0.96);
+      --text-2:       rgba(51, 63, 82, 0.86);
+      --text-3:       rgba(85, 97, 119, 0.76);
+      --text-4:       rgba(107, 118, 138, 0.68);
+      --accent:       #0a7cff;
+      --warn:         #f28a00;
 
       /* Floating action cluster */
-      --fac-bg:     rgba(255, 255, 255, 0.76);
-      --fac-border: rgba(0, 0, 0, 0.09);
-      --fac-shadow: 0 1px 3px rgba(0,0,0,0.08),
-                    0 6px 24px rgba(0,0,0,0.07),
-                    inset 0 1px 0 rgba(255,255,255,0.85);
+      --fac-bg:     rgba(255, 255, 255, 0.74);
+      --fac-border: rgba(16, 24, 40, 0.14);
+      --fac-divider: rgba(16, 24, 40, 0.13);
+      --fac-shadow: none;
 
       /* Markdown */
-      --md-code-bg: rgba(0,0,0,0.038);
-      --md-code-bd: rgba(0,0,0,0.07);
-      --md-hr:      rgba(0,0,0,0.09);
-      --md-link:    #007AFF;
+      --md-code-bg: rgba(39, 96, 186, 0.10);
+      --md-code-bd: rgba(62, 117, 205, 0.28);
+      --md-hr:      rgba(74, 123, 206, 0.24);
+      --md-link:    #3d92ff;
+      --blockquote-bg: rgba(10, 124, 255, 0.06);
+      --table-even-bg: rgba(8, 20, 36, 0.03);
+      --code-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 4px 12px rgba(15,23,42,0.08);
+      --img-shadow: 0 4px 24px rgba(15, 23, 42, 0.14);
 
       --t1: 130ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
       --t2: 260ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -62,27 +67,28 @@
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg:           rgba(28, 28, 30, 1);
-        --bg-sidebar:   rgba(255,255,255,0.038);
-        --bg-editor:    rgba(20, 20, 24, 0.98);
-        --border:       rgba(255,255,255,0.07);
-        --border-md:    rgba(255,255,255,0.11);
-        --border-lg:    rgba(255,255,255,0.18);
-        --text-1:       rgba(255,255,255,0.92);
-        --text-2:       rgba(255,255,255,0.50);
-        --text-3:       rgba(255,255,255,0.26);
-        --text-4:       rgba(255,255,255,0.14);
-        --accent:       #0A84FF;
-        --warn:         #FF9F0A;
-        --fac-bg:       rgba(48, 48, 52, 0.82);
-        --fac-border:   rgba(255,255,255,0.10);
-        --fac-shadow:   0 1px 3px rgba(0,0,0,0.35),
-                        0 6px 24px rgba(0,0,0,0.30),
-                        inset 0 1px 0 rgba(255,255,255,0.06);
-        --md-code-bg:   rgba(255,255,255,0.05);
-        --md-code-bd:   rgba(255,255,255,0.08);
-        --md-hr:        rgba(255,255,255,0.09);
-        --md-link:      #0A84FF;
+        --bg:           rgba(16, 19, 29, 0.86);
+        --bg-shell-1:   rgba(16, 19, 29, 0.82);
+        --bg-shell-2:   rgba(12, 16, 28, 0.84);
+        --bg-sidebar:   rgba(255, 255, 255, 0.072);
+        --bg-editor:    rgba(24, 27, 39, 0.80);
+        --border:       rgba(255, 255, 255, 0.08);
+        --border-md:    rgba(255, 255, 255, 0.13);
+        --border-lg:    rgba(255, 255, 255, 0.19);
+        --text-1:       rgba(238, 242, 251, 0.95);
+        --text-2:       rgba(198, 207, 228, 0.80);
+        --text-3:       rgba(157, 168, 194, 0.78);
+        --text-4:       rgba(129, 140, 169, 0.66);
+        --fac-bg:       rgba(24, 28, 42, 0.94);
+        --fac-border:   rgba(255, 255, 255, 0.08);
+        --fac-divider:  rgba(255, 255, 255, 0.14);
+        --md-code-bg:   rgba(90, 128, 206, 0.16);
+        --md-code-bd:   rgba(124, 162, 236, 0.35);
+        --md-hr:        rgba(124, 162, 236, 0.26);
+        --blockquote-bg: rgba(10,132,255,0.07);
+        --table-even-bg: rgba(255,255,255,0.022);
+        --code-shadow:  inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 16px rgba(0,0,0,0.22);
+        --img-shadow:   0 4px 24px rgba(0,0,0,0.12);
       }
     }
 
@@ -101,21 +107,27 @@
 
     /* ── Window shell ───────────────────────────────────────────────────────── */
     .window {
+      position: relative;
       display: flex;
       flex-direction: column;
       height: 100vh;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
+      background:
+        linear-gradient(180deg, var(--bg-shell-1), var(--bg-shell-2)),
+        var(--bg);
     }
 
-    /* Transparent strip that owns the native macOS title bar zone.
-       Dragging is wired in JavaScript with startDragging() so nested controls
-       can remain fully interactive. */
+    /* Native titlebar zone */
     .titlebar-region {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       height: var(--titlebar-h);
-      flex-shrink: 0;
-      background: transparent;
+      z-index: 80;
+      -webkit-app-region: drag;
+      pointer-events: auto;
     }
 
     /* Everything interactive must opt out of drag */
@@ -123,23 +135,21 @@
       -webkit-app-region: no-drag;
     }
 
-    /* ── Floating Action Cluster — lives inside .titlebar-region ─────────── */
+    /* ── Top actions (flat native-like toolbar) ───────────────────────────── */
     .fac {
-      position: absolute;          /* inside .titlebar-region, not fixed */
-      top: 50%;
-      right: 14px;
-      transform: translateY(-50%);
+      position: fixed;
+      top: 11px;
+      right: 12px;
+      height: 40px;
       display: flex;
       align-items: center;
-      gap: 2px;
-      padding: 4px 5px;
+      gap: 8px;
+      padding: 4px 8px;
       background: var(--fac-bg);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1px solid var(--fac-border);
-      border-radius: 11px;
+      border-radius: 12px;
       box-shadow: var(--fac-shadow);
-      animation: facIn 320ms var(--spring);
+      z-index: 120;
     }
 
     /* ── Body ────────────────────────────────────────────────────────────────── */
@@ -168,8 +178,14 @@
     }
 
     .sidebar-top {
-      padding: 14px 14px 6px;
+      padding: calc(var(--titlebar-h) + 8px) 14px 6px;
       flex-shrink: 0;
+    }
+    .sidebar-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
     .sidebar-label {
       font-size: 10px;
@@ -178,6 +194,20 @@
       text-transform: uppercase;
       color: var(--text-3);
     }
+    .sidebar-toggle-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border-md);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--t1), color var(--t1);
+    }
+    .sidebar-toggle-btn:hover { background: var(--border); color: var(--text-1); }
 
     .outline {
       flex: 1;
@@ -237,6 +267,7 @@
       display: flex;
       min-width: 0;
       position: relative;   /* anchor for the floating action cluster */
+      padding-top: 0;
     }
 
     /* Editor pane */
@@ -331,25 +362,34 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border: none;
-      border-radius: 7px;
+      border-radius: 9px;
       background: transparent;
       color: var(--text-2);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       transition: background var(--t1), color var(--t1), transform var(--t1);
       flex-shrink: 0;
     }
-    .fac-btn:hover  { background: var(--border-md); color: var(--text-1); }
+    .fac-btn:hover  { background: rgba(255,255,255,0.08); color: var(--text-1); }
     .fac-btn:active { transform: scale(0.90); }
     .fac-btn.on     { color: var(--accent); background: rgba(0,122,255,0.10); }
+    .fac-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+      transform: none;
+    }
+    .fac-btn:disabled:hover {
+      background: transparent;
+      color: var(--text-2);
+    }
 
     .fac-div {
       width: 1px;
       height: 16px;
-      background: var(--border-md);
+      background: var(--fac-divider);
       margin: 0 2px;
       flex-shrink: 0;
     }
@@ -431,11 +471,13 @@
 
     /* ── Markdown typography ─────────────────────────────────────────────────── */
     .md-content {
-      max-width: 740px;
+      width: min(860px, 100%);
+      max-width: 860px;
       margin: 0 auto;
-      padding: 32px 52px 100px;
+      padding: clamp(18px, 3vw, 34px) clamp(18px, 5vw, 56px) 100px;
       user-select: text;
       -webkit-user-select: text;
+      overflow-wrap: anywhere;
     }
 
     .md-content h1 {
@@ -478,13 +520,10 @@
     .md-content blockquote {
       margin: 24px 0; padding: 14px 20px;
       border-left: 3px solid var(--accent);
-      background: rgba(0,122,255,0.05);
+      background: var(--blockquote-bg);
       border-radius: 0 8px 8px 0;
     }
     .md-content blockquote p { color: var(--text-2); font-style: italic; margin-bottom: 0; }
-    @media (prefers-color-scheme: dark) {
-      .md-content blockquote { background: rgba(10,132,255,0.07); }
-    }
     .md-content code {
       font-family: var(--font-mono); font-size: 0.865em;
       background: var(--md-code-bg); border: 1px solid var(--md-code-bd);
@@ -493,14 +532,16 @@
     .md-content pre {
       background: var(--md-code-bg); border: 1px solid var(--md-code-bd);
       border-radius: 12px; padding: 20px 24px; overflow-x: auto; margin: 22px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px var(--md-code-bd);
+      box-shadow: var(--code-shadow);
     }
     .md-content pre code {
       font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65;
       background: transparent; border: none; padding: 0; border-radius: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
     .md-content hr { border: none; border-top: 1px solid var(--md-hr); margin: 36px 0; }
-    .md-content img { max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
+    .md-content img { max-width: 100%; height: auto; border-radius: 10px; box-shadow: var(--img-shadow); }
     .md-content table {
       width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 15px;
       border-radius: 10px; overflow: hidden; border: 1px solid var(--border-md);
@@ -516,10 +557,7 @@
       color: var(--text-1); line-height: 1.5;
     }
     .md-content tr:last-child td { border-bottom: none; }
-    .md-content tr:nth-child(even) td { background: rgba(0,0,0,0.016); }
-    @media (prefers-color-scheme: dark) {
-      .md-content tr:nth-child(even) td { background: rgba(255,255,255,0.022); }
-    }
+    .md-content tr:nth-child(even) td { background: var(--table-even-bg); }
     .md-content strong { font-weight: 650; }
     .md-content del { color: var(--text-3); }
 
@@ -567,45 +605,7 @@
 
   <!-- Native title bar clearance — transparent, fully draggable.
        Dragging is handled in JavaScript to keep action buttons responsive. -->
-  <div class="titlebar-region" id="titlebar-region">
-
-    <div class="fac" id="fac">
-      <button class="fac-btn" id="btn-open" title="Open File (⌘O)">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1.5 4.5h4l1.5 2h7.5v7h-13v-9z"/>
-        </svg>
-      </button>
-
-      <div class="fac-div"></div>
-
-      <button class="fac-btn" id="btn-reload" title="Reload (⌘R)" style="display:none">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M13.5 8A5.5 5.5 0 1 1 8 2.5a5.47 5.47 0 0 1 3.89 1.61L13.5 5.5"/>
-          <polyline points="13.5,2.5 13.5,5.5 10.5,5.5"/>
-        </svg>
-      </button>
-
-      <div class="fac-edit-wrap" id="fac-edit-wrap" style="display:none">
-        <button class="fac-btn" id="btn-edit" title="Edit Mode (⌘E)">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z"/>
-            <line x1="9.5" y1="4.5" x2="11.5" y2="6.5"/>
-          </svg>
-        </button>
-        <div class="dirty-dot" id="dirty-dot"></div>
-      </div>
-
-      <div class="fac-div" id="fac-div2" style="display:none"></div>
-
-      <button class="fac-btn on" id="btn-sidebar" title="Toggle Sidebar (⌘⇧S)">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <rect x="1.5" y="2.5" width="13" height="11" rx="2"/>
-          <line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/>
-        </svg>
-      </button>
-    </div>
-
-  </div>
+  <div class="titlebar-region" id="titlebar-region"></div>
 
   <!-- Body: sidebar + content -->
   <div class="body">
@@ -613,7 +613,15 @@
     <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
-        <div class="sidebar-label">Outline</div>
+        <div class="sidebar-top-row">
+          <div class="sidebar-label">Outline</div>
+          <button class="sidebar-toggle-btn" id="btn-sidebar" title="Hide Sidebar (⌘⇧S)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <rect x="1.5" y="2.5" width="13" height="11" rx="2"/>
+              <line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <nav class="outline" id="outline">
@@ -644,6 +652,50 @@
 
     <!-- ── Content area ───────────────────────────────────────────────────── -->
     <div class="content-area">
+      <div class="fac" id="fac">
+        <button class="fac-btn" id="btn-back" title="Back" style="display:none">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 3.5L4.5 8l5 4.5"/>
+            <path d="M5 8h7"/>
+          </svg>
+        </button>
+
+        <div class="fac-div" id="fac-div-back" style="display:none"></div>
+
+        <button class="fac-btn" id="btn-open" title="Open File (⌘O)">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1.5 4.5h4l1.5 2h7.5v7h-13v-9z"/>
+          </svg>
+        </button>
+
+        <div class="fac-div"></div>
+
+        <button class="fac-btn" id="btn-reload" title="Reload (⌘R)" style="display:none">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13.5 8A5.5 5.5 0 1 1 8 2.5a5.47 5.47 0 0 1 3.89 1.61L13.5 5.5"/>
+            <polyline points="13.5,2.5 13.5,5.5 10.5,5.5"/>
+          </svg>
+        </button>
+
+        <div class="fac-edit-wrap" id="fac-edit-wrap" style="display:none">
+          <button class="fac-btn" id="btn-edit" title="Edit Mode (⌘E)">
+            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z"/>
+              <line x1="9.5" y1="4.5" x2="11.5" y2="6.5"/>
+            </svg>
+          </button>
+          <div class="dirty-dot" id="dirty-dot"></div>
+        </div>
+
+        <div class="fac-div" id="fac-div2" style="display:none"></div>
+
+        <button class="fac-btn on" id="btn-sidebar-float" title="Show Sidebar (⌘⇧S)" style="display:none">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="1.5" y="2.5" width="13" height="11" rx="2"/>
+            <line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/>
+          </svg>
+        </button>
+      </div>
 
       <!-- Editor pane (slides in when Edit mode is active) -->
       <div class="editor-pane" id="editor-pane">
@@ -713,6 +765,7 @@
   let editMode      = false;
   let dirty         = false;
   let previewTimer  = null;
+  const backHistory = [];
 
   const $ = id => document.getElementById(id);
 
@@ -724,10 +777,13 @@
 
   $('btn-open').addEventListener('click', openFilePicker);
   $('btn-open-welcome').addEventListener('click', openFilePicker);
+  $('btn-back').addEventListener('click', goBack);
   $('btn-sidebar').addEventListener('click', toggleSidebar);
+  $('btn-sidebar-float').addEventListener('click', toggleSidebar);
   $('btn-reload').addEventListener('click', onReload);
   $('btn-edit').addEventListener('click', toggleEditMode);
   $('btn-save').addEventListener('click', saveFile);
+  setupDocumentLinkRouting();
 
   $('editor-textarea').addEventListener('input', () => {
     setDirty(true);
@@ -736,7 +792,7 @@
   });
 
   listen('file-changed', () => { if (currentPath && !dirty) loadFile(currentPath); });
-  listen('open-paths', event => loadFirstSupportedPath(event.payload));
+  listen('open-paths', event => loadFirstSupportedPath(event.payload, { pushHistory: true }));
 
   // ── Window movement ───────────────────────────────────────────────────────
   function setupTitlebarDrag() {
@@ -752,6 +808,8 @@
     sidebarOpen = !sidebarOpen;
     $('sidebar').classList.toggle('collapsed', !sidebarOpen);
     $('btn-sidebar').classList.toggle('on', sidebarOpen);
+    $('btn-sidebar-float').style.display = sidebarOpen ? 'none' : '';
+    $('btn-sidebar-float').classList.toggle('on', !sidebarOpen);
   }
 
   // ── Edit mode ─────────────────────────────────────────────────────────────
@@ -818,26 +876,84 @@
   async function loadInitialOpenPath() {
     try {
       const paths = await invoke('initial_open_paths');
-      loadFirstSupportedPath(paths);
+      loadFirstSupportedPath(paths, { pushHistory: false });
     } catch (e) { console.error('initial_open_paths:', e); }
   }
 
-  function loadFirstSupportedPath(paths) {
+  function loadFirstSupportedPath(paths, options = {}) {
     const path = (paths ?? [])
       .map(normalizeLocalPath)
       .find(p => typeof p === 'string' && p.length > 0);
-    if (path) loadFile(path);
+    if (path) loadFile(path, options);
   }
 
-  async function loadFile(path) {
+  async function loadFile(path, options = {}) {
+    const targetPath = normalizeLocalPath(path);
+    if (!targetPath) return;
+    if (options.pushHistory && currentPath && currentPath !== targetPath) {
+      const last = backHistory[backHistory.length - 1];
+      if (last !== currentPath) backHistory.push(currentPath);
+    }
+    updateBackButton();
+
     try {
-      const r = await invoke('render_file', { path });
-      currentPath   = path;
+      const r = await invoke('render_file', { path: targetPath });
+      currentPath   = targetPath;
       currentSource = r.source;
       if (editMode) $('editor-textarea').value = currentSource;
       renderResult(r);
-      invoke('watch_file', { path });
+      invoke('watch_file', { path: targetPath });
     } catch (e) { console.error('render_file:', e); }
+  }
+
+  function updateBackButton() {
+    const visible = backHistory.length > 0;
+    $('btn-back').style.display = visible ? '' : 'none';
+    $('fac-div-back').style.display = visible ? '' : 'none';
+    $('btn-back').disabled = !visible;
+  }
+
+  function goBack() {
+    const prev = backHistory.pop();
+    updateBackButton();
+    if (prev) loadFile(prev, { pushHistory: false });
+  }
+
+  function setupDocumentLinkRouting() {
+    $('md-content').addEventListener('click', e => {
+      const anchor = e.target.closest('a[href]');
+      if (!anchor) return;
+
+      const href = anchor.getAttribute('href')?.trim() ?? '';
+      const path = resolveMarkdownLinkPath(href);
+      if (!path) return;
+
+      e.preventDefault();
+      loadFile(path, { pushHistory: true });
+    });
+  }
+
+  function resolveMarkdownLinkPath(href) {
+    if (!href || href.startsWith('#')) return '';
+    if (/^(https?:|mailto:|tel:)/i.test(href)) return '';
+
+    let raw = href.split('#')[0].split('?')[0];
+    if (!raw) return '';
+
+    if (raw.startsWith('file://')) {
+      raw = normalizeLocalPath(raw);
+    } else if (!raw.startsWith('/')) {
+      if (!currentPath) return '';
+      try {
+        const baseDir = currentPath.slice(0, currentPath.lastIndexOf('/') + 1);
+        raw = decodeURIComponent(new URL(raw, `file://${baseDir}`).pathname);
+      } catch (_) {
+        return '';
+      }
+    }
+
+    const ext = raw.split('.').pop()?.toLowerCase();
+    return ['md', 'markdown', 'txt'].includes(ext) ? raw : '';
   }
 
   // ── Render ────────────────────────────────────────────────────────────────

@@ -13,7 +13,7 @@ Current implementation:
 - shared semantic Markdown core with parser diagnostics,
 - high-fidelity terminal rendering with tables, code blocks, and Mermaid text diagrams,
 - interactive ratatui viewer with split source edit mode and live preview,
-- Tauri desktop app with open/save/reload/watch, rendered preview, outline, and Mermaid diagrams,
+- Tauri desktop app with open/save/reload/watch, rendered preview, outline, Mermaid diagrams, and debounced autosave with unsaved-close guard rails,
 - macOS file associations for `.md`, `.markdown`, and `.txt`,
 - release workflow for macOS, Linux, and Windows artifacts.
 

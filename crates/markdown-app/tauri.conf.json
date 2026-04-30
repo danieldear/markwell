@@ -16,7 +16,11 @@
         "minWidth": 720,
         "minHeight": 520,
         "titleBarStyle": "Overlay",
-        "hiddenTitle": false,
+        "hiddenTitle": true,
+        "trafficLightPosition": {
+          "x": 14,
+          "y": 23
+        },
         "transparent": true,
         "decorations": true,
         "center": true
@@ -39,7 +43,11 @@
     "fileAssociations": [
       {
         "ext": ["md", "markdown"],
-        "contentTypes": ["net.daringfireball.markdown", "public.markdown", "public.plain-text"],
+        "contentTypes": [
+          "net.daringfireball.markdown",
+          "public.markdown",
+          "public.plain-text"
+        ],
         "name": "Markdown",
         "description": "Markdown Document",
         "mimeType": "text/markdown",

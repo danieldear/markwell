@@ -1,38 +1,62 @@
 # Markwell Quick Look Extension (macOS)
 
-This directory contains a working scaffold for a macOS Quick Look preview
-extension target that can render Markdown documents in Finder Quick Look.
+A macOS Quick Look preview extension that renders Markdown documents with proper HTML formatting in Finder Quick Look (press `Space` on any `.md` file).
 
 ## Contents
 
-- `Info.plist`: extension metadata, supported content types, principal class.
-- `Sources/PreviewProvider.swift`: `QLPreviewProvider` implementation.
+- `Info.plist` — extension metadata, supported content types, principal class.
+- `Sources/PreviewProvider.swift` — `QLPreviewProvider` + `QLPreviewingController` implementation.
+- `Sources/MarkdownRenderer.swift` — pure-Swift Markdown-to-HTML renderer.
+- `project.yml` — [xcodegen](https://github.com/yonaskolb/XcodeGen) project spec.
+- `build.sh` — build the extension and embed it in the Markwell app bundle.
 
-## Create The Extension Target In Xcode
+## Requirements
 
-1. Open your app packaging project/workspace in Xcode.
-2. Add a new target: `App Extension` -> `Quick Look Preview Extension`.
-3. Set target name to `MarkwellQuickLook`.
-4. Replace generated `Info.plist` and source file with files from this folder.
-5. Ensure deployment target is macOS 12.0 or newer.
-6. Set extension bundle identifier to:
-   - `dev.markwell.desktop.quicklook`
-7. Embed the extension in the host app target.
+- macOS 12.0 or later
+- Xcode command-line tools
+- [xcodegen](https://github.com/yonaskolb/XcodeGen): `brew install xcodegen`
 
-## Test Locally
+## Build & Install
 
-1. Build and run the host app with the extension embedded.
-2. Run:
+### Quick start (development)
 
 ```bash
-qlmanage -r
-qlmanage -r cache
+cd macos/MarkwellQuickLook
+
+# Build the extension and embed it in the Tauri debug app bundle
+./build.sh ../../target/debug/bundle/macos/Markwell.app
+
+# Or embed in the release bundle
+./build.sh ../../target/release/bundle/macos/Markwell.app
 ```
 
-3. In Finder, select a `.md` file and press `Space`.
+The script:
+1. Generates the Xcode project from `project.yml` (via xcodegen).
+2. Builds `MarkwellQuickLook.appex` with ad-hoc signing.
+3. Copies the `.appex` into `Markwell.app/Contents/PlugIns/`.
+4. Re-signs the app bundle and reloads the Quick Look daemon.
+
+### Manual Xcode workflow
+
+1. `xcodegen generate` — creates `MarkwellQuickLook.xcodeproj`.
+2. Open the project in Xcode and build the `MarkwellQuickLook` scheme.
+3. Copy the built `.appex` from DerivedData into `Markwell.app/Contents/PlugIns/`.
+4. Run `qlmanage -r && qlmanage -r cache`.
+
+## Test
+
+```bash
+# Confirm the extension is registered
+qlmanage -m | grep -i markwell
+
+# Preview a file from the command line
+qlmanage -p /path/to/file.md
+```
+
+Then in Finder: select any `.md` file and press `Space`.
 
 ## Notes
 
-- This scaffold currently uses a lightweight Markdown-to-HTML fallback in Swift.
-- The intended next step is replacing the fallback renderer with `markdown-ffi`
-  so Quick Look preview matches Markwell renderer behavior.
+- The extension must be embedded inside `Markwell.app` for macOS to register it; it cannot be installed as a standalone bundle.
+- Ad-hoc signing (`CODE_SIGN_IDENTITY="-"`) works for development. A Developer ID is required for distribution.
+- The Swift renderer handles headings, bold/italic, inline code, fenced code blocks, blockquotes, ordered/unordered lists, links, images, and horizontal rules.

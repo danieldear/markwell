@@ -1,0 +1,27 @@
+name: MarkwellQuickLook
+options:
+  bundleIdPrefix: dev.markwell
+  deploymentTarget:
+    macOS: "12.0"
+  xcodeVersion: "15"
+  generateEmptyDirectories: true
+
+targets:
+  MarkwellQuickLook:
+    type: app-extension
+    platform: macOS
+    deploymentTarget: "12.0"
+    sources:
+      - path: Sources
+    info:
+      path: Info.plist
+      properties: {}  # use file as-is; do not let xcodegen overwrite
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.markwell.desktop.quicklook
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGNING_ALLOWED: "YES"
+        SKIP_INSTALL: "NO"
