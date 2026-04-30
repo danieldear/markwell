@@ -21,6 +21,7 @@
           "x": 14,
           "y": 23
         },
+        "backgroundColor": "#00000000",
         "transparent": true,
         "decorations": true,
         "center": true

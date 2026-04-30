@@ -29,10 +29,13 @@
       --sidebar-w:  240px;
 
       /* Light */
-      --bg:           rgba(248, 250, 255, 0.88);
-      --bg-shell-1:   rgba(255, 255, 255, 0.84);
-      --bg-shell-2:   rgba(243, 247, 255, 0.90);
-      --bg-sidebar:   rgba(255, 255, 255, 0.70);
+      --bg:           rgba(248, 250, 255, 0.93);
+      --bg-shell-1:   rgba(255, 255, 255, 0.28);
+      --bg-shell-2:   rgba(243, 247, 255, 0.34);
+      --bg-sidebar:   rgba(250, 250, 252, 0.80);
+      --sidebar-tint: rgba(30, 32, 36, 0.10);
+      --sidebar-stroke: rgba(30, 41, 59, 0.22);
+      --bg-content:   rgb(247, 250, 255);
       --bg-editor:    rgba(255, 255, 255, 0.76);
       --border:       rgba(16, 24, 40, 0.09);
       --border-md:    rgba(16, 24, 40, 0.16);
@@ -67,10 +70,13 @@
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg:           rgba(16, 19, 29, 0.86);
-        --bg-shell-1:   rgba(16, 19, 29, 0.82);
-        --bg-shell-2:   rgba(12, 16, 28, 0.84);
-        --bg-sidebar:   rgba(255, 255, 255, 0.072);
+        --bg:           rgba(16, 19, 29, 0.91);
+        --bg-shell-1:   rgba(16, 19, 29, 0.34);
+        --bg-shell-2:   rgba(12, 16, 28, 0.38);
+        --bg-sidebar:   rgba(20, 22, 27, 0.82);
+        --sidebar-tint: rgba(0, 0, 0, 0.34);
+        --sidebar-stroke: rgba(148, 163, 184, 0.18);
+        --bg-content:   rgb(10, 14, 25);
         --bg-editor:    rgba(24, 27, 39, 0.80);
         --border:       rgba(255, 255, 255, 0.08);
         --border-md:    rgba(255, 255, 255, 0.13);
@@ -113,9 +119,7 @@
       height: 100vh;
       border-radius: 14px;
       overflow: hidden;
-      background:
-        linear-gradient(180deg, var(--bg-shell-1), var(--bg-shell-2)),
-        var(--bg);
+      background: transparent;
     }
 
     /* Native titlebar zone */
@@ -163,10 +167,17 @@
     .sidebar {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
+      position: relative;
+      z-index: 90;
       display: flex;
       flex-direction: column;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, var(--sidebar-tint), var(--sidebar-tint)),
+        var(--bg-sidebar);
+      backdrop-filter: blur(30px) saturate(1.55) contrast(1.08);
+      -webkit-backdrop-filter: blur(30px) saturate(1.55) contrast(1.08);
+      border-right: 1px solid var(--sidebar-stroke);
+      box-shadow: inset -1px 0 0 rgba(255,255,255,0.05);
       overflow: hidden;
       transition: width var(--t2), min-width var(--t2),
                   opacity var(--t2), border-color var(--t2);
@@ -181,12 +192,6 @@
       padding: calc(var(--titlebar-h) + 8px) 14px 6px;
       flex-shrink: 0;
     }
-    .sidebar-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
     .sidebar-label {
       font-size: 10px;
       font-weight: 700;
@@ -194,20 +199,6 @@
       text-transform: uppercase;
       color: var(--text-3);
     }
-    .sidebar-toggle-btn {
-      width: 24px;
-      height: 24px;
-      border: 1px solid var(--border-md);
-      border-radius: 6px;
-      background: transparent;
-      color: var(--text-2);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background var(--t1), color var(--t1);
-    }
-    .sidebar-toggle-btn:hover { background: var(--border); color: var(--text-1); }
 
     .outline {
       flex: 1;
@@ -268,6 +259,9 @@
       min-width: 0;
       position: relative;   /* anchor for the floating action cluster */
       padding-top: 0;
+      background:
+        linear-gradient(180deg, var(--bg-shell-1), var(--bg-shell-2)),
+        var(--bg-content);
     }
 
     /* Editor pane */
@@ -613,15 +607,7 @@
     <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
-        <div class="sidebar-top-row">
-          <div class="sidebar-label">Outline</div>
-          <button class="sidebar-toggle-btn" id="btn-sidebar" title="Hide Sidebar (⌘⇧S)">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <rect x="1.5" y="2.5" width="13" height="11" rx="2"/>
-              <line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/>
-            </svg>
-          </button>
-        </div>
+        <div class="sidebar-label">Outline</div>
       </div>
 
       <nav class="outline" id="outline">
@@ -668,7 +654,7 @@
           </svg>
         </button>
 
-        <div class="fac-div"></div>
+        <div class="fac-div" id="fac-div-open" style="display:none"></div>
 
         <button class="fac-btn" id="btn-reload" title="Reload (⌘R)" style="display:none">
           <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -689,7 +675,7 @@
 
         <div class="fac-div" id="fac-div2" style="display:none"></div>
 
-        <button class="fac-btn on" id="btn-sidebar-float" title="Show Sidebar (⌘⇧S)" style="display:none">
+        <button class="fac-btn on" id="btn-sidebar-float" title="Toggle Sidebar (⌘⇧S)">
           <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <rect x="1.5" y="2.5" width="13" height="11" rx="2"/>
             <line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/>
@@ -778,7 +764,6 @@
   $('btn-open').addEventListener('click', openFilePicker);
   $('btn-open-welcome').addEventListener('click', openFilePicker);
   $('btn-back').addEventListener('click', goBack);
-  $('btn-sidebar').addEventListener('click', toggleSidebar);
   $('btn-sidebar-float').addEventListener('click', toggleSidebar);
   $('btn-reload').addEventListener('click', onReload);
   $('btn-edit').addEventListener('click', toggleEditMode);
@@ -807,9 +792,7 @@
   function toggleSidebar() {
     sidebarOpen = !sidebarOpen;
     $('sidebar').classList.toggle('collapsed', !sidebarOpen);
-    $('btn-sidebar').classList.toggle('on', sidebarOpen);
-    $('btn-sidebar-float').style.display = sidebarOpen ? 'none' : '';
-    $('btn-sidebar-float').classList.toggle('on', !sidebarOpen);
+    $('btn-sidebar-float').classList.toggle('on', sidebarOpen);
   }
 
   // ── Edit mode ─────────────────────────────────────────────────────────────
@@ -821,6 +804,7 @@
     $('editor-pane').classList.add('open');
     $('btn-edit').classList.add('on');
     $('btn-reload').style.display = 'none';
+    $('fac-div-open').style.display = '';
     setTimeout(() => $('editor-textarea').focus(), 280);
   }
 
@@ -830,6 +814,7 @@
     $('editor-pane').classList.remove('open');
     $('btn-edit').classList.remove('on');
     $('btn-reload').style.display = '';
+    $('fac-div-open').style.display = '';
     setDirty(false);
   }
 
@@ -966,6 +951,7 @@
     $('btn-reload').style.display     = editMode ? 'none' : '';
     $('fac-edit-wrap').style.display  = '';
     $('fac-div2').style.display       = '';
+    $('fac-div-open').style.display   = '';
 
     // Sidebar footer
     $('sf-words').textContent = r.word_count.toLocaleString();

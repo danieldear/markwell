@@ -296,6 +296,8 @@ fn slugify(text: &str) -> String {
 #[cfg(target_os = "macos")]
 fn apply_macos_window_style(window: &WebviewWindow) {
     use window_vibrancy::{NSVisualEffectMaterial, apply_vibrancy};
+    // Runtime fallback for macOS where config-driven window effects may not
+    // apply consistently across builds/environments.
     apply_vibrancy(window, NSVisualEffectMaterial::Sidebar, None, None)
         .unwrap_or_else(|e| eprintln!("vibrancy unavailable: {e}"));
 }
