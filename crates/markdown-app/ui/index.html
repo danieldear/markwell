@@ -27,13 +27,14 @@
       /* Layout */
       --titlebar-h: 54px;   /* overlay titlebar zone */
       --sidebar-w:  240px;
+      --content-top-safe: 64px;
 
       /* Light */
       --bg:           rgba(248, 250, 255, 0.93);
-      --bg-shell-1:   rgba(255, 255, 255, 0.28);
-      --bg-shell-2:   rgba(243, 247, 255, 0.34);
-      --bg-sidebar:   rgba(250, 250, 252, 0.80);
-      --sidebar-tint: rgba(30, 32, 36, 0.10);
+      --bg-shell-1:   rgba(255, 255, 255, 0.72);
+      --bg-shell-2:   rgba(243, 247, 255, 0.78);
+      --bg-sidebar:   rgba(245, 248, 255, 0.28);
+      --sidebar-tint: rgba(30, 32, 36, 0.02);
       --sidebar-stroke: rgba(30, 41, 59, 0.22);
       --bg-content:   rgb(247, 250, 255);
       --bg-editor:    rgba(255, 255, 255, 0.76);
@@ -71,10 +72,10 @@
     @media (prefers-color-scheme: dark) {
       :root {
         --bg:           rgba(16, 19, 29, 0.91);
-        --bg-shell-1:   rgba(16, 19, 29, 0.34);
-        --bg-shell-2:   rgba(12, 16, 28, 0.38);
-        --bg-sidebar:   rgba(20, 22, 27, 0.82);
-        --sidebar-tint: rgba(0, 0, 0, 0.34);
+        --bg-shell-1:   rgba(12, 16, 28, 0.88);
+        --bg-shell-2:   rgba(10, 14, 25, 0.90);
+        --bg-sidebar:   rgba(14, 18, 28, 0.24);
+        --sidebar-tint: rgba(0, 0, 0, 0.08);
         --sidebar-stroke: rgba(148, 163, 184, 0.18);
         --bg-content:   rgb(10, 14, 25);
         --bg-editor:    rgba(24, 27, 39, 0.80);
@@ -174,8 +175,8 @@
       background:
         linear-gradient(180deg, var(--sidebar-tint), var(--sidebar-tint)),
         var(--bg-sidebar);
-      backdrop-filter: blur(30px) saturate(1.55) contrast(1.08);
-      -webkit-backdrop-filter: blur(30px) saturate(1.55) contrast(1.08);
+      backdrop-filter: blur(48px) saturate(2.35) contrast(1.14) brightness(0.98);
+      -webkit-backdrop-filter: blur(48px) saturate(2.35) contrast(1.14) brightness(0.98);
       border-right: 1px solid var(--sidebar-stroke);
       box-shadow: inset -1px 0 0 rgba(255,255,255,0.05);
       overflow: hidden;
@@ -468,7 +469,7 @@
       width: min(860px, 100%);
       max-width: 860px;
       margin: 0 auto;
-      padding: clamp(18px, 3vw, 34px) clamp(18px, 5vw, 56px) 100px;
+      padding: calc(clamp(18px, 3vw, 34px) + var(--content-top-safe)) clamp(18px, 5vw, 56px) 100px;
       user-select: text;
       -webkit-user-select: text;
       overflow-wrap: anywhere;
