@@ -4,12 +4,12 @@
 
 The security process covers:
 
-- `crates/markdown-core`
-- `crates/markdown-render-terminal`
-- `crates/markdown-render-html`
-- `crates/markdown-cli`
-- `crates/markdown-ffi`
-- `crates/markdown-app`
+- `crates/mdstar-core`
+- `crates/mdstar-render-terminal`
+- `crates/mdstar-render-html`
+- `crates/mdstar-cli`
+- `crates/mdstar-ffi`
+- `crates/mdstar-app`
 
 ## Reporting a Vulnerability
 

@@ -4,7 +4,7 @@ Date: 2026-04-24
 
 This document is retained as early product/design research. The current desktop
 implementation uses Tauri 2 with static HTML/CSS/JavaScript in
-`crates/markdown-app/ui/`. Treat this file as design background, not as the
+`crates/mdstar-app/ui/`. Treat this file as design background, not as the
 active implementation contract.
 
 ## Design Direction

@@ -2,7 +2,7 @@
 
 ## Product Name
 
-Markwell
+MD Star
 
 ## Date
 
@@ -10,7 +10,7 @@ Markwell
 
 ## Executive Summary
 
-Markwell is an open-source Markdown viewer/editor for macOS and Linux. It
+MD Star is an open-source Markdown viewer/editor for macOS and Linux. It
 combines a Tauri desktop app, a terminal `md` workflow, and shared Rust parsing
 and rendering components.
 
@@ -99,4 +99,4 @@ Acceptance:
 - macOS signing/notarization is not configured.
 - Tauri file association behavior must be validated from an installed app.
 - Linux packaging needs clean-runner verification.
-- The legacy `markdown-cli` crate can confuse contributors if not clearly documented.
+- The legacy `mdstar-cli` crate can confuse contributors if not clearly documented.

@@ -1,6 +1,6 @@
 name: MarkwellQuickLook
 options:
-  bundleIdPrefix: dev.markwell
+  bundleIdPrefix: dev.mdstar
   deploymentTarget:
     macOS: "12.0"
   xcodeVersion: "15"
@@ -18,7 +18,7 @@ targets:
       properties: {}  # use file as-is; do not let xcodegen overwrite
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.markwell.desktop.quicklook
+        PRODUCT_BUNDLE_IDENTIFIER: dev.mdstar.desktop.quicklook
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "12.0"
         CODE_SIGN_IDENTITY: "-"

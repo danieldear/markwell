@@ -1,4 +1,4 @@
-# Markwell Fixture
+# MD Star Fixture
 
 This fixture exercises tables, code fences, and Mermaid diagrams.
 

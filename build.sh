@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Master build script for Markwell.
+# Master build script for MD Star.
 #
 # Builds the Tauri app (Rust + frontend) and, on macOS, compiles and embeds
 # the Quick Look preview extension into the resulting app bundle.
@@ -17,7 +17,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
-APP_DIR="$REPO_ROOT/crates/markdown-app"
+APP_DIR="$REPO_ROOT/crates/mdstar-app"
 QL_DIR="$REPO_ROOT/macos/MarkwellQuickLook"
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ IS_MACOS=false
 [[ "$(uname -s)" == "Darwin" ]] && IS_MACOS=true
 
 # ── Step 1: Build Tauri app ───────────────────────────────────────────────────
-section "Building Markwell app"
+section "Building MD Star app"
 
 TAURI_ARGS=()
 [[ "$PROFILE" == "debug" ]] && TAURI_ARGS+=(--debug)

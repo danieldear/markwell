@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
-# Markwell CLI installer
+# MD Star CLI installer
 # Usage:
-#   REPO=owner/markdown curl -fsSL https://raw.githubusercontent.com/owner/markdown/main/install.sh | sh
+#   REPO=owner/mdstar curl -fsSL https://raw.githubusercontent.com/owner/mdstar/main/install.sh | sh
 #   ./install.sh --link-app
 
 set -e
@@ -30,12 +30,16 @@ link_macos_app() {
   [ "$(uname -s)" = "Darwin" ] || error "--link-app is only supported on macOS"
 
   if [ -z "$APP_PATH" ]; then
-    if [ -d "/Applications/Markwell.app" ]; then
+    if [ -d "/Applications/MD Star.app" ]; then
+      APP_PATH="/Applications/MD Star.app"
+    elif [ -d "$HOME/Applications/MD Star.app" ]; then
+      APP_PATH="$HOME/Applications/MD Star.app"
+    elif [ -d "/Applications/Markwell.app" ]; then
       APP_PATH="/Applications/Markwell.app"
     elif [ -d "$HOME/Applications/Markwell.app" ]; then
       APP_PATH="$HOME/Applications/Markwell.app"
     else
-      error "Markwell.app not found. Set APP_PATH=\"/path/to/Markwell.app\""
+      error "MD Star.app not found. Set APP_PATH=\"/path/to/MD Star.app\""
     fi
   fi
 

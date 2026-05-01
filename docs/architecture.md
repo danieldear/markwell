@@ -11,7 +11,7 @@
 
 ```text
                         +----------------------+
-                        | markdown-core        |
+                        | mdstar-core        |
                         | parse + semantic IR  |
                         | diagnostics          |
                         +----------+-----------+
@@ -20,18 +20,18 @@
               |                                         |
               v                                         v
     +--------------------------+              +----------------------+
-    | markdown-render-terminal |              | markdown-render-html |
+    | mdstar-render-terminal |              | mdstar-render-html |
     | mdansi + Mermaid text    |              | preview HTML         |
     +------------+-------------+              +----------+-----------+
                  |                                       |
                  v                                       v
         +----------------+                      +----------------+
         | md CLI / TUI   |                      | Tauri desktop  |
-        | markdown-app   |                      | markdown-app   |
+        | mdstar-app   |                      | mdstar-app   |
         +----------------+                      +----------------+
 ```
 
-`markdown-app` is the active product binary. It runs as a CLI in terminal
+`mdstar-app` is the active product binary. It runs as a CLI in terminal
 contexts and as a Tauri desktop app when launched with `--app`, from Finder, or
 from inside the macOS `.app` bundle.
 
@@ -40,12 +40,12 @@ from inside the macOS `.app` bundle.
 ```text
 .
 +-- crates/
-|   +-- markdown-core/
-|   +-- markdown-render-terminal/
-|   +-- markdown-render-html/
-|   +-- markdown-app/
-|   +-- markdown-cli/        legacy crate, retained for reference
-|   `-- markdown-ffi/
+|   +-- mdstar-core/
+|   +-- mdstar-render-terminal/
+|   +-- mdstar-render-html/
+|   +-- mdstar-app/
+|   +-- mdstar-cli/        legacy crate, retained for reference
+|   `-- mdstar-ffi/
 +-- docs/
 +-- tests/fixtures/
 `-- .github/workflows/
@@ -53,11 +53,11 @@ from inside the macOS `.app` bundle.
 
 ## Core Contracts
 
-- `markdown-core` parses source and returns a `Document` plus diagnostics.
-- `markdown-render-terminal` renders Markdown source for terminal output,
+- `mdstar-core` parses source and returns a `Document` plus diagnostics.
+- `mdstar-render-terminal` renders Markdown source for terminal output,
   including Mermaid preprocessing.
-- `markdown-render-html` renders semantic HTML for the desktop preview.
-- `markdown-ffi` exposes a minimal C ABI for future system integrations.
+- `mdstar-render-html` renders semantic HTML for the desktop preview.
+- `mdstar-ffi` exposes a minimal C ABI for future system integrations.
 
 ## Desktop Flow
 
@@ -68,7 +68,7 @@ Finder/Open With/CLI flag/dialog
 Tauri backend render_file/render_source
    |
    v
-markdown-core -> markdown-render-html
+mdstar-core -> mdstar-render-html
    |
    v
 frontend preview + outline + metadata
@@ -84,7 +84,7 @@ to the GUI.
 md <path>
    |
    v
-read file -> markdown-render-terminal -> stdout/pager or ratatui view
+read file -> mdstar-render-terminal -> stdout/pager or ratatui view
 ```
 
 The TUI edit mode writes directly to disk and refreshes the rendered preview
@@ -95,7 +95,7 @@ from the shared terminal renderer.
 Tauri owns application packaging:
 
 ```bash
-cd crates/markdown-app
+cd crates/mdstar-app
 cargo tauri build
 cargo tauri build --bundles dmg
 ```

@@ -2,7 +2,7 @@
 
 ## Scope
 
-Markwell currently targets:
+MD Star currently targets:
 
 - a Tauri desktop app for opening, reading, editing, and previewing Markdown,
 - a terminal `md` workflow for shell users,
@@ -14,33 +14,33 @@ implementation is Tauri 2.
 
 ## Component Responsibilities
 
-### `markdown-core`
+### `mdstar-core`
 
 - Parse Markdown into a semantic document model.
 - Collect recoverable diagnostics.
 - Provide stable data types for all renderers.
 
-### `markdown-render-terminal`
+### `mdstar-render-terminal`
 
 - Render terminal-friendly Markdown with mdansi.
 - Improve code block presentation.
 - Convert Mermaid fences to text diagrams.
 - Support ASCII-only Mermaid output.
 
-### `markdown-render-html`
+### `mdstar-render-html`
 
 - Render semantic HTML for desktop preview.
 - Keep HTML generation deterministic for tests.
 - Avoid runtime dependencies on frontend frameworks.
 
-### `markdown-app`
+### `mdstar-app`
 
 - Own the active `md` binary.
 - Route terminal launches into CLI/TUI behavior.
 - Route app launches into the Tauri GUI.
 - Handle open/save/reload/watch/file association flows.
 
-### `markdown-ffi`
+### `mdstar-ffi`
 
 - Provide a C ABI surface for future Quick Look and native integration adapters.
 

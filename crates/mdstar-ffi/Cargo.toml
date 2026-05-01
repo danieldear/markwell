@@ -1,0 +1,11 @@
+[package]
+name = "mdstar-ffi"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+mdstar-core = { path = "../mdstar-core" }
+mdstar-render-html = { path = "../mdstar-render-html" }

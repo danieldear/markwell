@@ -2,7 +2,7 @@
 
 ## Product Vision
 
-Markwell should feel like a practical open-source Markdown workbench:
+MD Star should feel like a practical open-source Markdown workbench:
 pleasant for reading, direct for editing, and useful from the command line.
 
 ## Product Shape
@@ -17,7 +17,7 @@ One Rust core
 ## Current Product Direction
 
 - Tauri desktop app for the native window, file association, and packaging path.
-- Static frontend inside `crates/markdown-app/ui/`.
+- Static frontend inside `crates/mdstar-app/ui/`.
 - Unified `md` binary that runs CLI/TUI behavior in terminal contexts and GUI
   behavior in app contexts.
 - GitHub Pages-ready static public page under `docs/`.
@@ -31,7 +31,7 @@ One Rust core
 
 ## Later Ideas
 
-- Quick Look extension backed by `markdown-ffi`.
+- Quick Look extension backed by `mdstar-ffi`.
 - Linux MIME registration tooling.
 - Syntax highlighting in HTML preview.
 - Configurable themes.

@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for contributing to Markwell.
+Thanks for contributing to MD Star.
 
 ## Development Setup
 

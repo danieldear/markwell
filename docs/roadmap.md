@@ -1,16 +1,16 @@
-# Markwell Roadmap
+# MD Star Roadmap
 
 Date: 2026-04-26
 
 This roadmap defines what to build after first-public-release readiness so
-Markwell can move from "usable" to "competitive" for developer workflows.
+MD Star can move from "usable" to "competitive" for developer workflows.
 
 ## Product Position
 
 Primary lane:
 
 ```text
-Markwell = local-first Markdown app + terminal-native workflow
+MD Star = local-first Markdown app + terminal-native workflow
 ```
 
 The strategy is to win on reliability, speed, and shell/desktop integration
@@ -71,7 +71,7 @@ Risks:
 Outcome:
 
 ```text
-Markwell becomes a daily-driver editor for developer note/docs workflows.
+MD Star becomes a daily-driver editor for developer note/docs workflows.
 ```
 
 Deliverables:
@@ -107,7 +107,7 @@ Risks:
 Outcome:
 
 ```text
-Markwell has clear reasons to choose it over general-purpose markdown editors.
+MD Star has clear reasons to choose it over general-purpose markdown editors.
 ```
 
 Deliverables:
@@ -142,7 +142,7 @@ Risks:
 Outcome:
 
 ```text
-Markwell is extensible, community-friendly, and maintainable as a public project.
+MD Star is extensible, community-friendly, and maintainable as a public project.
 ```
 
 Deliverables:

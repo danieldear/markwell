@@ -31,7 +31,7 @@ open-source developer tool.
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
-cd crates/markdown-app && cargo tauri build
+cd crates/mdstar-app && cargo tauri build
 ```
 
 ## GitHub Release Flow

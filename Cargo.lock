@@ -2686,64 +2686,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "markdown-app"
-version = "0.1.0"
-dependencies = [
- "ansi-to-tui",
- "anyhow",
- "assert_cmd",
- "clap",
- "crossterm 0.29.0",
- "markdown-core",
- "markdown-render-html",
- "markdown-render-terminal",
- "notify",
- "predicates",
- "ratatui",
- "ratatui-textarea",
- "rfd",
- "serde",
- "serde_json",
- "shell-words",
- "tauri",
- "tauri-build",
- "window-vibrancy 0.5.3",
-]
-
-[[package]]
-name = "markdown-core"
-version = "0.1.0"
-dependencies = [
- "markdown",
- "thiserror 2.0.18",
-]
-
-[[package]]
-name = "markdown-ffi"
-version = "0.1.0"
-dependencies = [
- "markdown-core",
- "markdown-render-html",
-]
-
-[[package]]
-name = "markdown-render-html"
-version = "0.1.0"
-dependencies = [
- "markdown-core",
-]
-
-[[package]]
-name = "markdown-render-terminal"
-version = "0.1.0"
-dependencies = [
- "markdown-core",
- "mdansi",
- "mermaid-text",
- "textwrap",
-]
-
-[[package]]
 name = "markup5ever"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2800,6 +2742,64 @@ dependencies = [
  "thiserror 2.0.18",
  "toml 0.8.23",
  "unicode-width",
+]
+
+[[package]]
+name = "mdstar-app"
+version = "0.1.0"
+dependencies = [
+ "ansi-to-tui",
+ "anyhow",
+ "assert_cmd",
+ "clap",
+ "crossterm 0.29.0",
+ "mdstar-core",
+ "mdstar-render-html",
+ "mdstar-render-terminal",
+ "notify",
+ "predicates",
+ "ratatui",
+ "ratatui-textarea",
+ "rfd",
+ "serde",
+ "serde_json",
+ "shell-words",
+ "tauri",
+ "tauri-build",
+ "window-vibrancy 0.5.3",
+]
+
+[[package]]
+name = "mdstar-core"
+version = "0.1.0"
+dependencies = [
+ "markdown",
+ "thiserror 2.0.18",
+]
+
+[[package]]
+name = "mdstar-ffi"
+version = "0.1.0"
+dependencies = [
+ "mdstar-core",
+ "mdstar-render-html",
+]
+
+[[package]]
+name = "mdstar-render-html"
+version = "0.1.0"
+dependencies = [
+ "mdstar-core",
+]
+
+[[package]]
+name = "mdstar-render-terminal"
+version = "0.1.0"
+dependencies = [
+ "mdansi",
+ "mdstar-core",
+ "mermaid-text",
+ "textwrap",
 ]
 
 [[package]]

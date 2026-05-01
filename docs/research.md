@@ -36,5 +36,5 @@ from drifting.
 - Whether to sign/notarize before the first public binary release or clearly mark
   binaries as unsigned.
 - Which Linux package formats should be considered first-class for v0.1.x.
-- Whether `markdown-cli` should be removed entirely or retained as a reference
+- Whether `mdstar-cli` should be removed entirely or retained as a reference
   crate outside the workspace.

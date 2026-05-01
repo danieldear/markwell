@@ -1,13 +1,13 @@
-# Markwell Documentation
+# MD Star Documentation
 
 These documents describe the product direction, current implementation, and
-release plan for Markwell.
+release plan for MD Star.
 
 ## Current Scope
 
 - Platforms: macOS and Linux first.
 - Desktop app: Tauri 2 native shell with an HTML/CSS frontend.
-- CLI: unified `md` binary from `markdown-app`.
+- CLI: unified `md` binary from `mdstar-app`.
 - Rendering: shared Rust core with terminal and HTML renderers.
 - System integration: macOS file associations now; Quick Look and Linux MIME
   integration planned after the first public release.
@@ -33,7 +33,7 @@ release plan for Markwell.
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
-cd crates/markdown-app && cargo tauri build
+cd crates/mdstar-app && cargo tauri build
 ```
 
 The release workflow creates draft GitHub releases when a `vMAJOR.MINOR.PATCH`

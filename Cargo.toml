@@ -1,10 +1,10 @@
 [workspace]
 members = [
-  "crates/markdown-core",
-  "crates/markdown-render-terminal",
-  "crates/markdown-render-html",
-  "crates/markdown-app",
-  "crates/markdown-ffi",
+  "crates/mdstar-core",
+  "crates/mdstar-render-terminal",
+  "crates/mdstar-render-html",
+  "crates/mdstar-app",
+  "crates/mdstar-ffi",
 ]
 resolver = "2"
 
@@ -12,7 +12,7 @@ resolver = "2"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 version = "0.1.0"
-authors = ["Markwell Contributors"]
+authors = ["MD Star Contributors"]
 
 [workspace.dependencies]
 anyhow = "1.0.100"

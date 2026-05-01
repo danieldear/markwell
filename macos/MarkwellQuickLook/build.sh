@@ -2,14 +2,14 @@
 # Build, embed, and register the MarkwellQuickLook extension.
 #
 # This script builds the Quick Look app extension target with xcodebuild,
-# embeds the .appex into a Markwell.app bundle, re-signs for local use, and
+# embeds the .appex into a MD Star.app bundle, re-signs for local use, and
 # refreshes the Quick Look daemon.
 #
 # Usage:
-#   ./build.sh [--app-bundle /path/to/Markwell.app] [--debug|--release]
+#   ./build.sh [--app-bundle /path/to/MD Star.app] [--debug|--release]
 #
 # Defaults:
-#   app bundle: /Applications/Markwell.app
+#   app bundle: /Applications/MD Star.app
 #   config:     Release
 
 set -euo pipefail
@@ -17,7 +17,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$SCRIPT_DIR/.build"
 BUNDLE_NAME="MarkwellQuickLook.appex"
-HOST_APP="/Applications/Markwell.app"
+HOST_APP="/Applications/MD Star.app"
 CONFIGURATION="Release"
 
 error() { printf '\033[31merror\033[0m: %s\n' "$1" >&2; exit 1; }
@@ -35,7 +35,7 @@ done
 
 command -v xcodebuild &>/dev/null || error "xcodebuild not found -- install Xcode command-line tools"
 command -v xcodegen &>/dev/null || error "xcodegen not found -- install with: brew install xcodegen"
-[[ -d "$HOST_APP" ]] || error "Markwell.app not found at $HOST_APP -- install the app first"
+[[ -d "$HOST_APP" ]] || error "MD Star.app not found at $HOST_APP -- install the app first"
 PLUGINS_DIR="$HOST_APP/Contents/PlugIns"
 DERIVED_DATA="$BUILD_DIR/DerivedData"
 APP_EX_PATH="$DERIVED_DATA/Build/Products/$CONFIGURATION/$BUNDLE_NAME"

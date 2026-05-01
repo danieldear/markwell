@@ -52,7 +52,7 @@ First public release is ready when:
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
-cd crates/markdown-app && cargo tauri build
+cd crates/mdstar-app && cargo tauri build
 ```
 
 all pass, and the draft GitHub release contains the expected artifacts.
