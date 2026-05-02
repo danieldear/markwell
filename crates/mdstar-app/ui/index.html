@@ -5,16 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MD Star</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'neutral',
-      fontFamily: '-apple-system, "SF Pro Text", "Helvetica Neue", sans-serif',
-      fontSize: 14,
-      securityLevel: 'loose',
-    });
-  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 
   <style>
     /* ── Reset ─────────────────────────────────────────────────────────────── */
@@ -393,7 +384,7 @@
     .scroll-pane {
       flex: 1;
       overflow-y: auto;
-      overflow-x: hidden;
+      overflow-x: auto;
       scrollbar-width: thin;
       position: relative;
     }
@@ -513,10 +504,10 @@
 
     /* ── Markdown typography ─────────────────────────────────────────────────── */
     .md-content {
-      width: min(860px, 100%);
-      max-width: 860px;
-      margin: 0 auto;
-      padding: calc(clamp(18px, 3vw, 34px) + var(--content-top-safe)) clamp(18px, 5vw, 56px) 100px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: calc(clamp(18px, 3vw, 34px) + var(--content-top-safe)) clamp(18px, 4vw, 48px) 100px;
       user-select: text;
       -webkit-user-select: text;
       overflow-wrap: anywhere;
@@ -579,14 +570,17 @@
     .md-content pre code {
       font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65;
       background: transparent; border: none; padding: 0; border-radius: 0;
-      white-space: pre-wrap;
-      word-break: break-word;
+      white-space: pre;
+      word-break: normal;
+      overflow-wrap: normal;
     }
     .md-content hr { border: none; border-top: 1px solid var(--md-hr); margin: 36px 0; }
     .md-content img { max-width: 100%; height: auto; border-radius: 10px; box-shadow: var(--img-shadow); }
     .md-content table {
-      width: max-content;
-      min-width: 100%;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      table-layout: auto;
       border-collapse: collapse;
       margin: 0;
       font-size: 15px;
@@ -611,6 +605,10 @@
     .md-content td {
       padding: 10px 16px; border-bottom: 1px solid var(--border);
       color: var(--text-1); line-height: 1.5;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      vertical-align: top;
     }
     .md-content tr:last-child td { border-bottom: none; }
     .md-content tr:nth-child(even) td { background: var(--table-even-bg); }
@@ -1129,21 +1127,57 @@
 
   // ── Mermaid ───────────────────────────────────────────────────────────────
   let mermaidN = 0;
+  let mermaidReady = null;
+
+  async function ensureMermaidReady() {
+    if (window.mermaid) return window.mermaid;
+    if (!mermaidReady) {
+      mermaidReady = new Promise((resolve) => {
+        let attempts = 0;
+        const maxAttempts = 100;
+        const iv = setInterval(() => {
+          if (window.mermaid) {
+            clearInterval(iv);
+            resolve(window.mermaid);
+            return;
+          }
+          attempts += 1;
+          if (attempts >= maxAttempts) {
+            clearInterval(iv);
+            resolve(null);
+          }
+        }, 50);
+      });
+    }
+    return mermaidReady;
+  }
+
   async function renderMermaid(container) {
-    const blocks = container.querySelectorAll('code.language-mermaid');
+    const blocks = container.querySelectorAll('pre > code.language-mermaid, pre > code.mermaid, pre > code[class*="language-mermaid"]');
     if (!blocks.length) return;
+    const mermaidLib = await ensureMermaidReady();
+    if (!mermaidLib) return;
+
     const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'neutral',
-      fontFamily: '-apple-system, "SF Pro Text", sans-serif', fontSize: 14, securityLevel: 'loose' });
+    mermaidLib.initialize({
+      startOnLoad: false,
+      theme: dark ? 'dark' : 'neutral',
+      fontFamily: '-apple-system, "SF Pro Text", sans-serif',
+      fontSize: 14,
+      securityLevel: 'loose',
+    });
+
     for (const code of blocks) {
       const id = 'mmd-' + (++mermaidN);
       try {
-        const { svg } = await mermaid.render(id, code.textContent);
+        const { svg } = await mermaidLib.render(id, code.textContent ?? '');
         const wrap = document.createElement('div');
         wrap.className = 'mermaid-diagram';
         wrap.innerHTML = svg;
-        code.closest('pre').replaceWith(wrap);
-      } catch (e) { console.warn('mermaid:', e.message ?? e); }
+        code.closest('pre')?.replaceWith(wrap);
+      } catch (e) {
+        console.warn('mermaid:', e?.message ?? e);
+      }
     }
   }
 

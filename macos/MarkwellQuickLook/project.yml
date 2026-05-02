@@ -28,6 +28,7 @@ targets:
           NSExtensionPointIdentifier: "com.apple.quicklook.preview"
           NSExtensionPrincipalClass: "$(PRODUCT_MODULE_NAME).PreviewProvider"
           NSExtensionAttributes:
+            QLIsDataBasedPreview: true
             QLSupportedContentTypes:
               - "public.markdown"
               - "net.daringfireball.markdown"

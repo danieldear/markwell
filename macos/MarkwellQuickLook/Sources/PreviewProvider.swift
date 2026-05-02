@@ -44,7 +44,7 @@ private func htmlDocument(from markdown: String, fileName: String) -> String {
             font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background: Canvas;
             color: CanvasText;
-            max-width: 860px;
+            max-width: none;
           }
           h1, h2, h3, h4, h5, h6 {
             margin: 1.4em 0 0.4em;
@@ -72,6 +72,10 @@ private func htmlDocument(from markdown: String, fileName: String) -> String {
             background: color-mix(in oklab, CanvasText 4%, Canvas);
           }
           pre code { background: none; padding: 0; font-size: 13px; }
+          pre.mermaid {
+            white-space: pre;
+            overflow: auto;
+          }
           blockquote {
             margin: 1em 0;
             padding: 0.5em 1em;
@@ -87,10 +91,69 @@ private func htmlDocument(from markdown: String, fileName: String) -> String {
             margin: 1.5em 0;
           }
           img { max-width: 100%; height: auto; }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+            table-layout: auto;
+          }
+          th, td {
+            border: 1px solid color-mix(in oklab, CanvasText 18%, Canvas);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+            white-space: normal;
+            overflow-wrap: anywhere;
+          }
+          th {
+            background: color-mix(in oklab, CanvasText 5%, Canvas);
+            font-weight: 600;
+          }
+          .mermaid-diagram {
+            margin: 1em 0;
+            padding: 12px;
+            border: 1px solid color-mix(in oklab, CanvasText 15%, Canvas);
+            border-radius: 8px;
+            overflow: auto;
+            background: color-mix(in oklab, CanvasText 4%, Canvas);
+          }
+          .mermaid-diagram svg { max-width: 100%; height: auto; }
         </style>
+        <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
       </head>
       <body>
         \(body)
+        <script>
+          (function renderMermaid() {
+            function start() {
+              if (!window.mermaid) return;
+              window.mermaid.initialize({
+                startOnLoad: false,
+                theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'neutral',
+                fontFamily: '-apple-system, "SF Pro Text", "Helvetica Neue", sans-serif',
+                fontSize: 14,
+                securityLevel: 'loose'
+              });
+              const blocks = Array.from(document.querySelectorAll('pre.mermaid'));
+              blocks.forEach(async (node, index) => {
+                try {
+                  const { svg } = await window.mermaid.render('qlm-' + index, node.textContent || '');
+                  const wrap = document.createElement('div');
+                  wrap.className = 'mermaid-diagram';
+                  wrap.innerHTML = svg;
+                  node.replaceWith(wrap);
+                } catch (_) {
+                  // Keep source block visible on rendering failure.
+                }
+              });
+            }
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', start, { once: true });
+            } else {
+              start();
+            }
+          })();
+        </script>
       </body>
     </html>
     """

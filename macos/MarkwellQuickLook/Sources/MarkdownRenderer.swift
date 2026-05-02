@@ -22,6 +22,27 @@ func renderMarkdown(_ source: String) -> String {
             continue
         }
 
+        // GFM table
+        if i + 1 < lines.count,
+           let headers = parseTableRow(line),
+           isTableSeparator(lines[i + 1], expectedColumns: headers.count) {
+            i += 2
+            var rows: [[String]] = []
+            while i < lines.count {
+                let rowLine = lines[i]
+                if rowLine.trimmingCharacters(in: .whitespaces).isEmpty {
+                    break
+                }
+                guard let row = parseTableRow(rowLine) else {
+                    break
+                }
+                rows.append(normalizeTableRow(row, to: headers.count))
+                i += 1
+            }
+            blocks.append(renderTable(headers: headers, rows: rows))
+            continue
+        }
+
         // Fenced code block
         let fencePrefix = line.hasPrefix("```") ? "```" : line.hasPrefix("~~~") ? "~~~" : nil
         if let fence = fencePrefix {
@@ -34,8 +55,12 @@ func renderMarkdown(_ source: String) -> String {
             }
             i += 1
             let code = codeLines.joined(separator: "\n")
-            let langAttr = lang.isEmpty ? "" : " class=\"language-\(escapeHTML(lang))\""
-            blocks.append("<pre><code\(langAttr)>\(escapeHTML(code))</code></pre>")
+            if lang.caseInsensitiveCompare("mermaid") == .orderedSame {
+                blocks.append("<pre class=\"mermaid\">\(escapeHTML(code))</pre>")
+            } else {
+                let langAttr = lang.isEmpty ? "" : " class=\"language-\(escapeHTML(lang))\""
+                blocks.append("<pre><code\(langAttr)>\(escapeHTML(code))</code></pre>")
+            }
             continue
         }
 
@@ -96,6 +121,11 @@ func renderMarkdown(_ source: String) -> String {
             if isHorizontalRule(t) { break }
             if l.hasPrefix(">") { break }
             if isUnorderedListItem(l) || isOrderedListItem(l) { break }
+            if i + 1 < lines.count,
+               let headers = parseTableRow(l),
+               isTableSeparator(lines[i + 1], expectedColumns: headers.count) {
+                break
+            }
             paraLines.append(l)
             i += 1
         }
@@ -138,6 +168,53 @@ private func isUnorderedListItem(_ line: String) -> Bool {
 
 private func isOrderedListItem(_ line: String) -> Bool {
     line.range(of: #"^\d+\.\s+"#, options: .regularExpression) != nil
+}
+
+private func parseTableRow(_ line: String) -> [String]? {
+    guard line.contains("|") else { return nil }
+    var trimmed = line.trimmingCharacters(in: .whitespaces)
+    guard !trimmed.isEmpty else { return nil }
+    if trimmed.hasPrefix("|") { trimmed.removeFirst() }
+    if trimmed.hasSuffix("|") { trimmed.removeLast() }
+    let cells = trimmed
+        .split(separator: "|", omittingEmptySubsequences: false)
+        .map { String($0).trimmingCharacters(in: .whitespaces) }
+    guard cells.count >= 2 else { return nil }
+    return cells
+}
+
+private func isTableSeparator(_ line: String, expectedColumns: Int) -> Bool {
+    guard let cells = parseTableRow(line), cells.count == expectedColumns else {
+        return false
+    }
+    return cells.allSatisfy { $0.range(of: #"^:?-{3,}:?$"#, options: .regularExpression) != nil }
+}
+
+private func normalizeTableRow(_ cells: [String], to count: Int) -> [String] {
+    if cells.count == count {
+        return cells
+    }
+    if cells.count > count {
+        return Array(cells.prefix(count))
+    }
+    return cells + Array(repeating: "", count: count - cells.count)
+}
+
+private func renderTable(headers: [String], rows: [[String]]) -> String {
+    var html = "<table><thead><tr>"
+    for header in headers {
+        html += "<th>\(renderInline(header))</th>"
+    }
+    html += "</tr></thead><tbody>"
+    for row in rows {
+        html += "<tr>"
+        for cell in row {
+            html += "<td>\(renderInline(cell))</td>"
+        }
+        html += "</tr>"
+    }
+    html += "</tbody></table>"
+    return html
 }
 
 // MARK: - Inline rendering
