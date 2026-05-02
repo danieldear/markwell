@@ -3,565 +3,489 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="MD Star: open-source developer document workbench for Markdown-first workflows." />
-  <title>MD Star | Developer Document Workbench</title>
+  <meta name="description" content="MD Star — open-source Markdown workbench for engineers. Terminal reader and desktop editor sharing one Rust parser core." />
+  <title>MD Star · Developer Document Workbench</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root,
-    [data-theme="dark"] {
-      --bg: #07080c;
-      --bg-soft: #0d0f16;
-      --panel: #0e111b;
-      --line: rgba(245, 166, 35, 0.22);
-      --line-soft: rgba(245, 166, 35, 0.1);
-      --text: #f7f6f2;
-      --muted: #b5b1a4;
-      --accent: #f5a623;
-      --accent-strong: #ffba49;
-      --accent-soft: rgba(245, 166, 35, 0.14);
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
-    }
-
-    [data-theme="light"] {
-      --bg: #f8f4ea;
-      --bg-soft: #fffdf8;
-      --panel: #fffaf0;
-      --line: rgba(192, 112, 16, 0.33);
-      --line-soft: rgba(192, 112, 16, 0.15);
-      --text: #1e1a14;
-      --muted: #5d5342;
-      --accent: #c07010;
-      --accent-strong: #dd8414;
-      --accent-soft: rgba(192, 112, 16, 0.14);
-      --shadow: 0 20px 45px rgba(45, 27, 10, 0.16);
-    }
-
-    [data-theme="light"] .panel {
-      background: rgba(255, 252, 245, 0.42);
-    }
-
-    [data-theme="light"] .card,
-    [data-theme="light"] .step {
-      background: rgba(255, 253, 248, 0.36);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      font-family: "IBM Plex Mono", monospace;
-      background-color: var(--bg);
-      background-image:
-        linear-gradient(var(--line-soft) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
-        radial-gradient(700px 420px at 22% 10%, var(--accent-soft), transparent 65%);
-      background-size: 40px 40px, 40px 40px, auto;
-    }
-
-    .shell {
-      width: min(1200px, calc(100% - 2rem));
-      margin: 0 auto;
-      padding: 0.85rem 0 2.5rem;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0.5rem;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 0.8rem 0.9rem;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: color-mix(in srgb, var(--bg-soft) 88%, transparent);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-weight: 700;
-      text-decoration: none;
-      color: var(--text);
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-    }
-
-    .brand-dot {
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      border-radius: 7px;
-      border: 1px solid var(--line);
-      background: var(--accent-soft);
-      color: var(--accent-strong);
-      font-size: 0.8rem;
-    }
-
-    nav {
-      margin-left: auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 0.35rem;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      padding: 0.35rem 0.55rem;
-      transition: 0.2s ease;
-    }
-
-    nav a:hover {
-      color: var(--text);
-      border-color: var(--line);
-      background: var(--accent-soft);
-    }
-
-    .theme-toggle {
-      flex-shrink: 0;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--accent);
-      border-radius: 8px;
-      font: inherit;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.45rem 0.52rem;
-      cursor: pointer;
-    }
-
-    .hero {
-      margin-top: 1rem;
-      padding: clamp(1rem, 2vw, 1.4rem);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: color-mix(in srgb, var(--bg-soft) 92%, transparent);
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 1rem;
-      box-shadow: var(--shadow);
-    }
-
-    .kicker {
-      width: fit-content;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.66rem;
-      padding: 0.25rem 0.52rem;
-      margin-bottom: 0.85rem;
-    }
-
-    h1 {
-      margin: 0 0 0.75rem;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(2rem, 7vw, 4.5rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      max-width: 11ch;
-    }
-
-    .hero h1 .accent { color: var(--accent); display: block; }
-
-    .lead {
-      margin: 0;
-      max-width: 56ch;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 0.88rem;
-    }
-
-    .actions {
-      margin-top: 1.2rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .btn {
-      text-decoration: none;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.55rem 0.8rem;
-      transition: 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #151008;
-      border-color: rgba(0, 0, 0, 0.1);
-      font-weight: 700;
-    }
-
-    .btn-primary:hover { background: var(--accent-strong); }
-
-    .btn-ghost {
-      color: var(--text);
-      background: transparent;
-    }
-
-    .btn-ghost:hover { background: var(--accent-soft); }
-
-    .terminal {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      overflow: hidden;
-      background: #0b0c11;
-    }
-
-    .term-head {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.52rem 0.7rem;
-      border-bottom: 1px solid var(--line-soft);
-      color: #8f8978;
-      font-size: 0.68rem;
-    }
-
-    .dots { display: inline-flex; gap: 0.22rem; }
-    .dots span {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #3a3426;
-      border: 1px solid rgba(245, 166, 35, 0.35);
-    }
-
-    .term-body {
-      margin: 0;
-      padding: 0.9rem;
-      color: #cdc7b8;
-      font-size: 0.75rem;
-      line-height: 1.65;
-      overflow: auto;
-    }
-
-    .panel {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 16px;
-      background: rgba(11, 14, 24, 0.2);
-      backdrop-filter: saturate(180%) blur(32px);
-      -webkit-backdrop-filter: saturate(180%) blur(32px);
-      box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.28);
-    }
-
-    h2 {
-      margin: 0 0 0.85rem;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(1.25rem, 4vw, 2rem);
-      letter-spacing: -0.02em;
-    }
-
-    .sub {
-      margin: 0 0 1rem;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 0.82rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.65rem;
-    }
-
-    .card {
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      background: rgba(10, 12, 22, 0.14);
-      backdrop-filter: saturate(185%) blur(30px);
-      -webkit-backdrop-filter: saturate(185%) blur(30px);
-      padding: 0.85rem;
-      transition: 0.2s ease;
-      box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.24);
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      background: rgba(245, 166, 35, 0.1);
-      border-color: rgba(255, 255, 255, 0.24);
-    }
-
-    .card h3 {
-      margin: 0 0 0.4rem;
-      color: var(--accent);
-      font-size: 0.82rem;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.76rem;
-      line-height: 1.65;
-    }
-
-    pre.block {
-      margin: 0;
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #0b0c11;
-      color: #efe9dc;
-      font-size: 0.75rem;
-      line-height: 1.7;
-      padding: 0.85rem;
-    }
-
-    .roadmap {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.65rem;
-    }
-
-    .step {
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      background: rgba(10, 12, 22, 0.14);
-      backdrop-filter: saturate(185%) blur(30px);
-      -webkit-backdrop-filter: saturate(185%) blur(30px);
-      padding: 0.85rem;
-      box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.24);
-    }
-
-    .step .num {
-      color: var(--accent);
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.35rem;
-    }
-
-    .step h3 {
-      margin: 0 0 0.36rem;
-      font-size: 0.8rem;
-    }
-
-    .step p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.75rem;
-      line-height: 1.6;
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    footer {
-      margin-top: 1rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.45s ease, transform 0.45s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .roadmap { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 680px) {
-      .shell { width: min(1200px, calc(100% - 1rem)); }
-      nav { display: none; }
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar reveal">
-      <a class="brand" href="#overview">
-        <span class="brand-dot">★</span>
-        <span>MD Star</span>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <a class="brand" href="#overview">
+      <img src="markwell-icon.png" width="20" height="20" alt="" />
+      MD Star
+    </a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#install">Install</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <div class="header-right">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.22 3.22l1.06 1.06M11.72 11.72l1.06 1.06M11.72 4.28l-1.06 1.06M4.28 11.72l-1.06 1.06" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.5 10A6.5 6.5 0 0 1 6 2.5a6.5 6.5 0 1 0 7.5 7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <a class="btn-gh" href="https://github.com/danieldear/mdstar" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
       </a>
-      <nav aria-label="Sections">
-        <a href="#features">Features</a>
-        <a href="#install">Install</a>
-        <a href="#workflows">Workflows</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#links">GitHub</a>
-      </nav>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">light</button>
-    </header>
+    </div>
+  </header>
 
-    <section id="overview" class="hero reveal">
-      <article>
-        <div class="kicker">Markdown · Workbench · Local First</div>
-        <h1>Your docs stack,<span class="accent">orchestrated.</span></h1>
-        <p class="lead">
-          MD Star is a document-native toolchain for engineers. It combines desktop editing, terminal reading,
-          and one Rust parser core so markdown behavior stays consistent across interfaces.
-        </p>
-        <div class="actions">
-          <a class="btn btn-primary" href="#install">Install</a>
-          <a class="btn btn-ghost" href="./README.md">Read Docs</a>
-          <a class="btn btn-ghost" href="https://github.com/danieldear/mdstar/issues" target="_blank" rel="noopener">Issues</a>
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section id="overview" class="hero">
+    <div class="hero-text">
+      <div class="badge-row">
+        <span class="badge">Rust</span>
+        <span class="badge">Markdown</span>
+        <span class="badge badge-warn">Early Preview</span>
+      </div>
+      <h1>Your docs stack,<br>orchestrated.</h1>
+      <p class="hero-desc">
+        MD Star is a document-native toolchain for engineers. One Rust parser core drives
+        both the terminal reader and the desktop editor — markdown behavior stays
+        consistent everywhere.
+      </p>
+      <div class="install-block">
+        <div class="install-label">Quick install</div>
+        <div class="install-line">
+          <span class="i-prompt">$</span>
+          <span class="i-cmd">git clone https://github.com/danieldear/mdstar &amp;&amp; cd mdstar</span>
+          <button class="copy-btn" id="copyBtn" aria-label="Copy install command">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M3 10H2a1 1 0 01-1-1V2a1 1 0 011-1h7a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+          </button>
         </div>
-      </article>
-      <aside class="terminal" aria-label="Terminal preview">
-        <div class="term-head">
-          <span class="dots"><span></span><span></span><span></span></span>
-          <span>terminal — mdstar</span>
+        <div class="install-line">
+          <span class="i-prompt">$</span>
+          <span class="i-cmd">cargo build --release -p mdstar-app</span>
         </div>
-        <pre class="term-body">$ md README.md
-✓ markdown parsed successfully
-✓ terminal renderer active
-✓ tables and mermaid blocks detected
-
-$ cargo run -p mdstar-app -- --app
-✓ desktop shell started
-✓ workspace loaded
-✓ autosave ready
-
-$ cargo test -p mdstar-core
-running parser fixtures...
-✓ all tests passed</pre>
-      </aside>
-    </section>
-
-    <section id="features" class="panel reveal">
-      <h2>Features</h2>
-      <p class="sub">A compact, high-signal surface for writing and reviewing technical docs at speed.</p>
-      <div class="grid">
-        <article class="card"><h3>Terminal Reader</h3><p><code>md file.md</code> with consistent table handling and pager-friendly output.</p></article>
-        <article class="card"><h3>Desktop Edit + Preview</h3><p>Autosave, outline navigation, file association open flows, and rapid iteration loops.</p></article>
-        <article class="card"><h3>Shared Parser Core</h3><p>One semantic Rust pipeline powers both terminal and desktop behavior.</p></article>
-        <article class="card"><h3>Mermaid Support</h3><p>Diagram blocks render across both interfaces without custom user transforms.</p></article>
-        <article class="card"><h3>Workspace Navigation</h3><p>Move through linked docs quickly with document-centric traversal patterns.</p></article>
-        <article class="card"><h3>Format Expansion</h3><p>Roadmap includes YAML, JSON, and XML readers with the same ergonomics.</p></article>
       </div>
-    </section>
-
-    <section id="install" class="panel reveal">
-      <h2>Install</h2>
-      <p class="sub">Clone, build, and run in terminal or desktop mode.</p>
-      <div style="display:grid; gap:0.65rem;">
-        <pre class="block">$ git clone https://github.com/danieldear/mdstar
-$ cd markwell
-$ cargo build --release -p mdstar-app</pre>
-        <pre class="block">$ ./target/release/md README.md
-$ cargo run -p mdstar-app -- --app</pre>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#install">Get started</a>
+        <a class="btn btn-outline" href="./README.md">Read the docs</a>
       </div>
-    </section>
+    </div>
 
-    <section id="workflows" class="panel reveal">
-      <h2>Workflows</h2>
-      <p class="sub">Move fluidly between quick CLI checks, desktop edits, and parser-level validation.</p>
-      <div class="grid">
-        <article class="card"><h3>Inspect</h3><p>Run fast CLI reads to validate structure and output fidelity.</p></article>
-        <article class="card"><h3>Edit</h3><p>Switch to desktop for outline-guided editing and instant visual confirmation.</p></article>
-        <article class="card"><h3>Ship</h3><p>Return to terminal for scripted checks and release-ready doc updates.</p></article>
+    <div class="hero-term" aria-label="Terminal and preview mockup">
+      <div class="term-titlebar">
+        <span class="term-proc">zsh — mdstar</span>
+        <div class="term-tabs">
+          <button class="demo-tab active" type="button">cli</button>
+          <button class="demo-tab" type="button">desktop</button>
+        </div>
+        <span class="term-badge">v0.1-preview</span>
       </div>
-    </section>
-
-    <section id="architecture" class="panel reveal">
-      <h2>Architecture</h2>
-      <p class="sub">A single semantic core with dedicated render layers for each interface.</p>
-      <pre class="block">+------------------+
-|   mdstar-core    |
-+------------------+
-       /     \
-      /       \
-+-----------------------+   +---------------------+
-| mdstar-render-terminal|   | mdstar-render-html  |
-+-----------------------+   +---------------------+
-           |                          |
-      +-----------+              +-----------+
-      | CLI (md)  |              | Desktop   |
-      +-----------+              +-----------+</pre>
-    </section>
-
-    <section id="roadmap" class="panel reveal">
-      <h2>Roadmap</h2>
-      <p class="sub">Near-term priorities to harden the stack for broader contribution.</p>
-      <div class="roadmap">
-        <article class="step"><div class="num">01 · FORMAT LAYERS</div><h3>Structured parsers</h3><p>Add YAML, JSON, and XML readers with quick section jumping.</p></article>
-        <article class="step"><div class="num">02 · GRAPH NAVIGATION</div><h3>Linked docs depth</h3><p>Improve backlinks, traversal speed, and multi-file movement.</p></article>
-        <article class="step"><div class="num">03 · RELEASE MATURITY</div><h3>Contributor flow</h3><p>Stabilize crate naming, packaging, and release automation.</p></article>
+      <div class="term-body">
+        <div class="pane-term">
+          <div class="term-prompt-line">
+            <span class="tp-sym">❯</span>&nbsp;
+            <span class="tp-sep">~/docs</span>&nbsp;
+            <span class="tp-cmd">md README.md</span>
+            <span class="tp-cursor">▋</span>
+          </div>
+          <div class="term-out">
+            <div class="to-rule"></div>
+            <div class="to-h1"># MD Star</div>
+            <div class="to-blank"></div>
+            <div class="to-p">Open-source developer document workbench.</div>
+            <div class="to-blank"></div>
+            <div class="to-h2">## Install</div>
+            <div class="to-blank"></div>
+            <div class="to-code">  $ cargo build --release -p mdstar-app</div>
+            <div class="to-blank"></div>
+            <div class="to-h2">## Features</div>
+            <div class="to-blank"></div>
+            <div class="to-li"><span class="a">•</span> Terminal reader with table support</div>
+            <div class="to-li"><span class="a">•</span> Desktop editor with autosave</div>
+            <div class="to-li"><span class="a">•</span> Mermaid diagram rendering</div>
+            <div class="to-blank"></div>
+            <div class="to-diag">
+              <div class="to-box">mdstar-core</div>
+              <span class="to-arr">&nbsp;──▶&nbsp;</span>
+              <div class="to-box">terminal</div>
+            </div>
+            <div class="to-rule"></div>
+          </div>
+        </div>
+        <div class="pane-preview">
+          <div class="prev-inner">
+            <div class="prev-ruler"></div>
+            <div class="prev-h1">MD Star</div>
+            <div class="prev-lead">Open-source developer document workbench.</div>
+            <div class="prev-h2">Install</div>
+            <div class="prev-code">$ cargo build --release -p mdstar-app</div>
+            <div class="prev-h2">Features</div>
+            <div class="prev-p">Terminal reader, desktop editor, and shared Rust parser core for consistent markdown behavior across interfaces.</div>
+            <div class="prev-h2">Architecture</div>
+            <div class="prev-diag">
+              <div class="pd-node pd-core">mdstar-core</div>
+              <div class="pd-arrows"><div class="pd-line"></div></div>
+              <div class="pd-branch">
+                <span></span><span></span>
+              </div>
+              <div class="pd-targets">
+                <div class="pd-node">terminal</div>
+                <div class="pd-node">desktop</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
-
-    <section id="links" class="panel reveal">
-      <h2>GitHub</h2>
-      <div class="links">
-        <a class="btn btn-primary" href="https://github.com/danieldear/mdstar" target="_blank" rel="noopener">Repository</a>
-        <a class="btn btn-ghost" href="./README.md">README</a>
-        <a class="btn btn-ghost" href="https://github.com/danieldear/mdstar/issues" target="_blank" rel="noopener">Issues</a>
+      <div class="term-statusbar">
+        <span class="a">✓</span>
+        <span class="tsb-sep">|</span>
+        <span>README.md</span>
+        <span class="tsb-sep">|</span>
+        <span>markdown</span>
+        <span class="tsb-right">mdstar-core · utf-8</span>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>MD Star · dark-first design with amber accents</footer>
+  <!-- ── Spec bar ───────────────────────────────────────────── -->
+  <div class="spec-bar">
+    <div class="spec-item">
+      <span class="spec-key">Language</span>
+      <span class="spec-val">Rust</span>
+    </div>
+    <div class="spec-div"></div>
+    <div class="spec-item">
+      <span class="spec-key">License</span>
+      <span class="spec-val">MIT / Apache-2.0</span>
+    </div>
+    <div class="spec-div"></div>
+    <div class="spec-item">
+      <span class="spec-key">Interfaces</span>
+      <span class="spec-val">Terminal + Desktop</span>
+    </div>
+    <div class="spec-div"></div>
+    <div class="spec-item">
+      <span class="spec-key">Parser core</span>
+      <span class="spec-val">mdstar-core</span>
+    </div>
+    <div class="spec-div"></div>
+    <div class="spec-item">
+      <span class="spec-key">Status</span>
+      <span class="spec-val amber-text">Early preview</span>
+    </div>
   </div>
 
+  <!-- ── Features ──────────────────────────────────────────── -->
+  <section id="features" class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Features</div>
+        <h2>Everything your docs<br>workflow needs</h2>
+        <p class="section-sub">A compact, high-signal surface for writing and reviewing technical docs at speed.</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5 7h8M5 10.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Terminal Reader</h3>
+          <p><code>md file.md</code> delivers clean, consistent output with table handling and pager-friendly rendering.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">cli</span>
+            <span class="feat-tag">tables</span>
+            <span class="feat-tag">pager</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="2" width="14" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6 16h6M9 13v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Desktop Editor</h3>
+          <p>Autosave, outline navigation, file association, and instant visual confirmation in a native GPUI window.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">gpui</span>
+            <span class="feat-tag">autosave</span>
+            <span class="feat-tag">outline</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M9 5v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Shared Parser Core</h3>
+          <p>One semantic Rust pipeline powers both interfaces — edge cases are fixed once, consistently everywhere.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">rust</span>
+            <span class="feat-tag">ast</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="3" y="5" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Mermaid Support</h3>
+          <p>Diagram blocks render across both interfaces without custom user transforms or extra tooling.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">diagrams</span>
+            <span class="feat-tag">mermaid</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Workspace Navigation</h3>
+          <p>Move through linked documents quickly with document-centric traversal patterns and backlink awareness.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">links</span>
+            <span class="feat-tag">backlinks</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3 9h12M3 5.5h7M3 12.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Format Expansion</h3>
+          <p>Roadmap includes YAML, JSON, and XML readers with the same ergonomics as the Markdown pipeline.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">yaml</span>
+            <span class="feat-tag">json</span>
+            <span class="feat-tag">xml</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Architecture ──────────────────────────────────────── -->
+  <section id="architecture" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Architecture</div>
+        <h2>One core, two surfaces</h2>
+        <p class="section-sub">A single semantic parser with dedicated render layers for each interface.</p>
+      </div>
+      <div class="arch-wrap">
+        <div class="arch-diagram">
+          <div class="arch-row">
+            <div class="arch-node arch-core">
+              <div class="an-name"><code>mdstar-core</code></div>
+              <div class="an-desc">Rust parser &amp; AST</div>
+            </div>
+          </div>
+          <div class="arch-connectors">
+            <div class="arch-vert"></div>
+            <div class="arch-horiz"><span></span><span></span></div>
+          </div>
+          <div class="arch-row arch-mid-row">
+            <div class="arch-node">
+              <div class="an-name"><code>render-terminal</code></div>
+              <div class="an-desc">ANSI renderer</div>
+            </div>
+            <div class="arch-node">
+              <div class="an-name"><code>render-html</code></div>
+              <div class="an-desc">HTML renderer</div>
+            </div>
+          </div>
+          <div class="arch-connectors arch-connectors-2">
+            <div class="arch-vert"></div>
+            <div class="arch-vert"></div>
+          </div>
+          <div class="arch-row arch-out-row">
+            <div class="arch-node arch-leaf">
+              <div class="an-name">CLI <code>md</code></div>
+              <div class="an-desc">terminal interface</div>
+            </div>
+            <div class="arch-node arch-leaf">
+              <div class="an-name"><code>mdstar-app</code></div>
+              <div class="an-desc">desktop window</div>
+            </div>
+          </div>
+        </div>
+        <div class="arch-notes">
+          <div class="arch-note">
+            <span class="an-tag">CORE</span>
+            <p>The parser lives in <code>mdstar-core</code> and emits a typed AST. Neither render layer re-parses — they consume the same tree, so edge cases are fixed once.</p>
+          </div>
+          <div class="arch-note">
+            <span class="an-tag">TERMINAL</span>
+            <p><code>mdstar-render-terminal</code> walks the AST and emits ANSI escape sequences. Tables, code fences, and Mermaid labels are all handled at this layer.</p>
+          </div>
+          <div class="arch-note">
+            <span class="an-tag">DESKTOP</span>
+            <p><code>mdstar-render-html</code> feeds the GPUI-powered app. Outline navigation, autosave, and live preview all derive from the same parsed document model.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Install ────────────────────────────────────────────── -->
+  <section id="install" class="section">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Install</div>
+        <h2>Up and running<br>in three steps</h2>
+        <p class="section-sub">Clone, build, and choose terminal or desktop mode.</p>
+      </div>
+      <div class="qs-grid">
+        <div class="qs-card">
+          <div class="qs-card-head">
+            <span class="qs-num">01 · CLONE</span>
+            <h3>Get the source</h3>
+          </div>
+          <pre class="codeblock"><span class="t-dim">$ </span><span class="t-kw">git</span> clone \
+  https://github.com/danieldear/mdstar
+<span class="t-dim">$ </span><span class="t-kw">cd</span> mdstar</pre>
+        </div>
+        <div class="qs-card">
+          <div class="qs-card-head">
+            <span class="qs-num">02 · BUILD</span>
+            <h3>Compile with Cargo</h3>
+          </div>
+          <pre class="codeblock"><span class="t-dim">$ </span><span class="t-kw">cargo</span> build \
+  --release \
+  -p mdstar-app</pre>
+        </div>
+        <div class="qs-card">
+          <div class="qs-card-head">
+            <span class="qs-num">03 · RUN</span>
+            <h3>Choose your interface</h3>
+          </div>
+          <pre class="codeblock"><span class="t-dim"># terminal reader</span>
+<span class="t-dim">$ </span>./target/release/<span class="t-kw">md</span> README.md
+
+<span class="t-dim"># desktop app</span>
+<span class="t-dim">$ </span><span class="t-kw">cargo</span> run -p mdstar-app \
+  -- --app</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Roadmap ────────────────────────────────────────────── -->
+  <section id="roadmap" class="section section-alt">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-label">Roadmap</div>
+        <h2>What's next</h2>
+        <p class="section-sub">Near-term priorities to harden the stack for broader contribution.</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4 4h10v10H4z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 8h4M7 11h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Structured Parsers</h3>
+          <p>Add YAML, JSON, and XML readers with quick section jumping and the same ergonomics as the Markdown pipeline.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">01</span>
+            <span class="feat-tag">format layers</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <circle cx="5" cy="5" r="2" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="13" cy="5" r="2" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 5h2M9 11V7" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Graph Navigation</h3>
+          <p>Improve backlinks, traversal speed, and multi-file movement across linked document graphs.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">02</span>
+            <span class="feat-tag">graph</span>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 3l1.5 3h3l-2.4 1.8.9 3L9 9l-3 1.8.9-3L4.5 6h3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M6 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Release Maturity</h3>
+          <p>Stabilize crate naming, packaging, and release automation for a smooth contributor onboarding flow.</p>
+          <div class="feat-tags">
+            <span class="feat-tag">03</span>
+            <span class="feat-tag">contrib</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img src="markwell-icon.png" width="16" height="16" alt="" />
+      MD Star
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/danieldear/mdstar" target="_blank" rel="noopener">GitHub</a>
+      <a href="./README.md">Docs</a>
+      <a href="https://github.com/danieldear/mdstar/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="../LICENSE-MIT" target="_blank" rel="noopener">MIT License</a>
+    </div>
+    <span class="footer-legal">© 2025 MD Star contributors</span>
+  </footer>
+
+  <script src="site.js"></script>
   <script>
+    // Theme toggle
     const root = document.documentElement;
-    const toggle = document.getElementById("themeToggle");
-    const savedTheme = localStorage.getItem("mdstar-theme");
+    const toggle = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('mdstar-theme');
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
 
-    if (savedTheme === "light" || savedTheme === "dark") {
-      root.setAttribute("data-theme", savedTheme);
-      toggle.textContent = savedTheme === "dark" ? "light" : "dark";
-    }
-
-    toggle.addEventListener("click", () => {
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      localStorage.setItem("mdstar-theme", next);
-      toggle.textContent = next === "dark" ? "light" : "dark";
+    toggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mdstar-theme', next);
     });
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
+    // Copy install command
+    const copyBtn = document.getElementById('copyBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const cmd = 'git clone https://github.com/danieldear/mdstar && cd mdstar && cargo build --release -p mdstar-app';
+        navigator.clipboard.writeText(cmd).then(() => {
+          copyBtn.classList.add('copied');
+          setTimeout(() => copyBtn.classList.remove('copied'), 2000);
+        });
       });
-    }, { threshold: 0.14 });
-
-    document.querySelectorAll(".reveal").forEach((el) => sectionObserver.observe(el));
+    }
   </script>
 </body>
 </html>
