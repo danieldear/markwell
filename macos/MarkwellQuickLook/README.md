@@ -24,10 +24,10 @@ A macOS Quick Look preview extension that renders Markdown documents with proper
 cd macos/MarkwellQuickLook
 
 # Build the extension and embed it in the Tauri debug app bundle
-./build.sh ../../target/debug/bundle/macos/MD Star.app
+./build.sh --app-bundle ../../target/debug/bundle/macos/MD\ Star.app
 
 # Or embed in the release bundle
-./build.sh ../../target/release/bundle/macos/MD Star.app
+./build.sh --app-bundle ../../target/release/bundle/macos/MD\ Star.app
 ```
 
 The script:

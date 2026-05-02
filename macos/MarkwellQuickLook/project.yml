@@ -15,7 +15,24 @@ targets:
       - path: Sources
     info:
       path: Info.plist
-      properties: {}  # use file as-is; do not let xcodegen overwrite
+      properties:
+        CFBundleDevelopmentRegion: "$(DEVELOPMENT_LANGUAGE)"
+        CFBundleExecutable: "$(EXECUTABLE_NAME)"
+        CFBundleIdentifier: "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: "$(PRODUCT_NAME)"
+        CFBundlePackageType: "XPC!"
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        NSExtension:
+          NSExtensionPointIdentifier: "com.apple.quicklook.preview"
+          NSExtensionPrincipalClass: "$(PRODUCT_MODULE_NAME).PreviewProvider"
+          NSExtensionAttributes:
+            QLSupportedContentTypes:
+              - "public.markdown"
+              - "net.daringfireball.markdown"
+              - "public.plain-text"
+              - "public.text"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.mdstar.desktop.quicklook
@@ -24,4 +41,5 @@ targets:
         CODE_SIGN_IDENTITY: "-"
         CODE_SIGNING_REQUIRED: "NO"
         CODE_SIGNING_ALLOWED: "YES"
+        CODE_SIGN_ENTITLEMENTS: "MarkwellQuickLook.entitlements"
         SKIP_INSTALL: "NO"

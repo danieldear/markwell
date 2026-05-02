@@ -7,6 +7,7 @@
 #
 # Usage:
 #   ./build.sh [--app-bundle /path/to/MD Star.app] [--debug|--release]
+#   ./build.sh /path/to/MD Star.app [--debug|--release]
 #
 # Defaults:
 #   app bundle: /Applications/MD Star.app
@@ -19,6 +20,7 @@ BUILD_DIR="$SCRIPT_DIR/.build"
 BUNDLE_NAME="MarkwellQuickLook.appex"
 HOST_APP="/Applications/MD Star.app"
 CONFIGURATION="Release"
+EXT_ENTITLEMENTS="$SCRIPT_DIR/MarkwellQuickLook.entitlements"
 
 error() { printf '\033[31merror\033[0m: %s\n' "$1" >&2; exit 1; }
 info()  { printf '\033[34m  ->\033[0m %s\n' "$1"; }
@@ -29,6 +31,7 @@ while [[ $# -gt 0 ]]; do
     --app-bundle) HOST_APP="$2"; shift 2 ;;
     --debug) CONFIGURATION="Debug"; shift ;;
     --release) CONFIGURATION="Release"; shift ;;
+    *.app) HOST_APP="$1"; shift ;;
     *) error "Unknown option: $1" ;;
   esac
 done
@@ -66,8 +69,10 @@ rm -rf "$PLUGINS_DIR/$BUNDLE_NAME"
 cp -R "$APP_EX_PATH" "$PLUGINS_DIR/"
 ok "Embedded"
 
-info "Re-signing host app for local execution"
-codesign --force --deep --sign - "$HOST_APP"
+# Preserve extension entitlements. Re-sign nested code first, then app bundle.
+info "Re-signing extension + host app for local execution"
+codesign --force --sign - --entitlements "$EXT_ENTITLEMENTS" "$PLUGINS_DIR/$BUNDLE_NAME"
+codesign --force --sign - "$HOST_APP"
 ok "Re-signed host app"
 
 info "Refreshing Quick Look registration"
@@ -76,4 +81,9 @@ qlmanage -r cache >/dev/null 2>&1 || true
 pluginkit -a "$PLUGINS_DIR/$BUNDLE_NAME" >/dev/null 2>&1 || true
 
 ok "Quick Look refresh complete"
+EXT_BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$PLUGINS_DIR/$BUNDLE_NAME/Contents/Info.plist" 2>/dev/null || true)
+if [[ -n "${EXT_BUNDLE_ID:-}" ]]; then
+  info "Extension registration status ($EXT_BUNDLE_ID)"
+  pluginkit -m -A -D -i "$EXT_BUNDLE_ID" || true
+fi
 info "Test: select a .md file in Finder and press Space"
